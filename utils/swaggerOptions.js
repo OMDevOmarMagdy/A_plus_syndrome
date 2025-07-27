@@ -34,11 +34,13 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: "http://localhost:5000",
+        url: "https://a-plus-syndrome-hba3rcmvv-omdevomarmagdys-projects.vercel.app/",
       },
     ],
   },
   apis: ["./Routes/*.js"],
 };
+// https://a-plus-syndrome-hba3rcmvv-omdevomarmagdys-projects.vercel.app/
+// http://localhost:5000
 
 module.exports = swaggerOptions;
