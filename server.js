@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 
 const swaggerUi = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
+const swaggerOptions = require("./utils/swaggerOptions");
 
 const authRouter = require("./Routes/authRoutes");
 
@@ -12,26 +13,14 @@ dotenv.config();
 // ============= Create the App =============
 const app = express();
 
+// ============= Cors =============
+const cors = require("cors");
+app.use(cors());
+
 // ============= Middlewares =============
 app.use(express.json());
 
 // ============= Swagger =============
-const swaggerOptions = {
-  definition: {
-    openapi: "3.0.0",
-    info: {
-      title: "Cources API",
-      version: "1.0.0",
-      description: "API documentation for Cources site",
-    },
-    servers: [
-      {
-        url: "http://localhost:5000",
-      },
-    ],
-  },
-  apis: ["./Routes/*.js"],
-};
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
 // ============= Database Connection =============
