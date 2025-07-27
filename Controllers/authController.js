@@ -3,6 +3,8 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 const sendMail = require("../utils/sendMail");
 const generateToken = require("../utils/generateToken");
+const sendmail = require("../utils/sendMail");
+const crypto = require("crypto-js");
 
 const generateOTP = () => {
   return Math.floor(100000 + Math.random() * 900000).toString();
@@ -40,8 +42,11 @@ exports.signUp = async (req, res, next) => {
       `Your OTP is: ${OTP}`
     );
 
+    const token = generateToken(user);
+
     res.status(201).json({
       message: "OTP sent to your email, Please verify.",
+      token,
     });
   } catch (error) {
     next(error);
@@ -95,7 +100,7 @@ exports.login = async (req, res, next) => {
     // ============= User exist or not =============
     const user = await User.findOne({ email }).select("+password");
     // console.log(user);
-    if (!user) {
+    if (!user || user.isVerified === false) {
       return res.status(400).json({
         message: "This user is not exist",
       });
@@ -138,6 +143,7 @@ exports.protect = async (req, res, next) => {
   ) {
     token = req.headers.authorization.split(" ")[1];
   }
+  console.log(token);
 
   if (!token) {
     return res.status(400).json({ message: "You are not logged in" });
@@ -148,3 +154,80 @@ exports.protect = async (req, res, next) => {
 };
 
 // ======================================================================
+
+exports.forgetPassword = async (req, res, next) => {
+  // Get email
+  const email = req.body.email;
+
+  // Find this email
+  const user = await User.findOne({ email });
+  if (!user) {
+    return res.status(404).json({ message: "This email dosn't exist!!" });
+  }
+
+  // Create the URL contain the token to send into the gamil
+  // http://localhost:5000/api/v1/auth/resetPassword/:resetToken
+  const resetToken = user.createResettoken();
+  await user.save({ validateBeforeSave: false });
+  console.log(resetToken);
+
+  const url = `${req.protocol}://${req.get(
+    "host"
+  )}/api/v1/auth/resetPassword/:${resetToken}`;
+  console.log("URL: ", url);
+
+  try {
+    await sendmail(
+      user.email,
+      "Forget password",
+      `Click on this link to reset your password: ${url}, \n If not please skip this email.`
+    );
+
+    // response ==> check your email if you forget password else please skip it
+    res.status(200).json({
+      message: "Check your email to Reset your password",
+    });
+  } catch (error) {
+    user.resetToken = undefined;
+    user.resetTokenExpires = undefined;
+    await user.save({ validateBeforeSave: false });
+    next(error);
+  }
+};
+
+exports.resetPassword = async (req, res, next) => {
+  try {
+    // ============== Get user based on resetToken ==============
+    const comparedToken = crypto
+      .SHA256(req.params.resetToken)
+      .toString(crypto.enc.Hex);
+    console.log(comparedToken);
+
+    const user = await User.findOne({
+      resetToken: comparedToken,
+      resetTokenExpires: { $gt: Date.now() },
+    });
+    console.log(user);
+
+    if (!user) {
+      return res.status(400).json({ message: "Invalid or expired token" });
+    }
+
+    user.password = req.body.password;
+    user.resetToken = undefined;
+    user.resetTokenExpires = undefined;
+    await user.save();
+
+    const token = generateToken(user);
+
+    res.status(200).json({
+      message: "Password Reset Successfylly",
+      token,
+      data: {
+        user,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};

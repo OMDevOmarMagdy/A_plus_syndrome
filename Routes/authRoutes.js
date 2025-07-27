@@ -106,4 +106,7 @@ router.post("/signUp", authController.signUp);
 router.post("/verify", authController.verifyOTP);
 router.post("/login", authController.login);
 
+router.post("/forgetPassword", authController.forgetPassword);
+router.patch("/resetPassword/:resetToken", authController.resetPassword);
+
 module.exports = router;

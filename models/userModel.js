@@ -35,7 +35,10 @@ const userSchema = new mongoose.Schema(
     },
     OTP: String,
     otpExpire: Date,
-    isVerified: Boolean,
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
     resetToken: String,
     resetTokenExpires: Date,
   },
@@ -59,6 +62,7 @@ userSchema.methods.copmaredPassword = async function (pass1, pass2) {
 
 userSchema.methods.createResettoken = function () {
   const randomToken = crypto.lib.WordArray.random(16).toString(crypto.enc.Hex);
+  console.log(`RandomToken before encrypted: ${randomToken}`);
 
   this.resetToken = crypto.SHA256(randomToken).toString(crypto.enc.Hex);
   this.resetTokenExpires = Date.now() + 10 * 60 * 1000;
