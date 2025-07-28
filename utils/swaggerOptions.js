@@ -34,7 +34,7 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: "http://localhost:5000",
+        url: "https://a-plus-syndrome-omdevomarmagdys-projects.vercel.app/",
       },
     ],
   },
