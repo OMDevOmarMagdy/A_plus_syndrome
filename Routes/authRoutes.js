@@ -146,7 +146,7 @@ const authController = require("../Controllers/authController");
 /**
  * @swagger
  * /api/v1/auth/reset-password/{resetToken}:
- *   put:
+ *   patch:
  *     summary: Reset the user's password using the reset token
  *     tags: [Auth]
  *     parameters:

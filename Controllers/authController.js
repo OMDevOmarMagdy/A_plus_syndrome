@@ -173,7 +173,7 @@ exports.forgetPassword = async (req, res, next) => {
 
   const url = `${req.protocol}://${req.get(
     "host"
-  )}/api/v1/auth/resetPassword/${resetToken}`;
+  )}/api/v1/auth/reset-password/${resetToken}`;
   console.log("URL: ", url);
 
   try {
