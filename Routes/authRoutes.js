@@ -11,7 +11,7 @@ const authController = require("../Controllers/authController");
 
 /**
  * @swagger
- * /api/v1/auth/signUp:
+ * /api/v1/auth/sign-up:
  *   post:
  *     summary: Create a new user account
  *     tags: [Auth]
@@ -44,7 +44,7 @@ const authController = require("../Controllers/authController");
 
 /**
  * @swagger
- * /api/v1/auth/verify:
+ * /api/v1/auth/verify-otp:
  *   post:
  *     summary: Verify user account using OTP
  *     tags: [Auth]
@@ -104,7 +104,7 @@ const authController = require("../Controllers/authController");
 
 /**
  * @swagger
- * /api/v1/auth/forgetPassword:
+ * /api/v1/auth/forget-password:
  *   post:
  *     summary: Send password reset link to user's email
  *     tags: [Auth]
@@ -145,7 +145,7 @@ const authController = require("../Controllers/authController");
 
 /**
  * @swagger
- * /api/v1/auth/resetPassword/{resetToken}:
+ * /api/v1/auth/reset-password/{resetToken}:
  *   put:
  *     summary: Reset the user's password using the reset token
  *     tags: [Auth]
@@ -199,11 +199,11 @@ const authController = require("../Controllers/authController");
  *                   example: Invalid or expired token
  */
 
-router.post("/signUp", authController.signUp);
-router.post("/verify", authController.verifyOTP);
+router.post("/sign-up", authController.signUp);
+router.post("/verify-otp", authController.verifyOTP);
 router.post("/login", authController.login);
 
-router.post("/forgetPassword", authController.forgetPassword);
-router.patch("/resetPassword/:resetToken", authController.resetPassword);
+router.post("/forget-password", authController.forgetPassword);
+router.patch("/reset-password/:resetToken", authController.resetPassword);
 
 module.exports = router;
