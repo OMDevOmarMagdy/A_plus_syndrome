@@ -10,7 +10,7 @@ const sendmail = async (to, subject, text) => {
   });
 
   await transporter.sendMail({
-    from: `"Online Courses" <${process.env.EMAIL_FROM}>`,
+    from: `"A+ Syndrome" <${process.env.EMAIL_FROM}>`,
     to,
     subject,
     text,
