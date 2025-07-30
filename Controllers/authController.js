@@ -171,9 +171,11 @@ exports.forgetPassword = async (req, res, next) => {
   await user.save({ validateBeforeSave: false });
   console.log(resetToken);
 
-  const url = `${req.protocol}://${req.get(
-    "host"
-  )}/api/v1/auth/reset-password/${resetToken}`;
+  // const url = `${req.protocol}://${req.get(
+  //   "host"
+  // )}/api/v1/auth/reset-password/${resetToken}`;
+
+  const url = `https://asyndrome.vercel.app/api/v1/auth/reset-password/${resetToken}`;
   console.log("URL: ", url);
 
   try {
@@ -194,6 +196,8 @@ exports.forgetPassword = async (req, res, next) => {
     next(error);
   }
 };
+
+// ======================================================================
 
 exports.resetPassword = async (req, res, next) => {
   try {

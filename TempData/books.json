@@ -1,0 +1,37 @@
+[
+  {
+    "title": "The Alchemist",
+    "summary": "A young Andalusian shepherd travels to Egypt after having a recurring dream of finding treasure there.",
+    "price": 9.99,
+    "cover": "https://example.com/covers/alchemist.jpg",
+    "author": "Paulo Coelho"
+  },
+  {
+    "title": "1984",
+    "summary": "A dystopian novel set in a totalitarian society ruled by Big Brother.",
+    "price": 14.5,
+    "cover": "https://example.com/covers/1984.jpg",
+    "author": "George Orwell"
+  },
+  {
+    "title": "To Kill a Mockingbird",
+    "summary": "A story of racial injustice and childhood innocence set in the American South.",
+    "price": 12.0,
+    "cover": "https://example.com/covers/mockingbird.jpg",
+    "author": "Harper Lee"
+  },
+  {
+    "title": "Sapiens: A Brief History of Humankind",
+    "summary": "Explores the history and impact of Homo sapiens on the world.",
+    "price": 18.75,
+    "cover": "https://example.com/covers/sapiens.jpg",
+    "author": "Yuval Noah Harari"
+  },
+  {
+    "title": "The Hobbit",
+    "summary": "Bilbo Baggins goes on an unexpected journey to help dwarves reclaim their mountain home from a dragon.",
+    "price": 11.3,
+    "cover": "https://example.com/covers/hobbit.jpg",
+    "author": "J.R.R. Tolkien"
+  }
+]

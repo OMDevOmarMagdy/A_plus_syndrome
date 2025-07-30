@@ -1,0 +1,122 @@
+[
+  {
+    "name": "Omar Magdy",
+    "email": "omar.magdy@example.com",
+    "password": "password123",
+    "role": "admin",
+    "image": "https://example.com/images/omar.jpg",
+    "OTP": "847263",
+    "otpExpire": "2025-07-29T10:00:00Z",
+    "isVerified": true,
+    "resetToken": null,
+    "resetTokenExpires": null
+  },
+  {
+    "name": "Sara Ahmed",
+    "email": "sara.ahmed@example.com",
+    "password": "saraPass456",
+    "role": "user",
+    "image": "https://example.com/images/sara.jpg",
+    "OTP": "293847",
+    "otpExpire": "2025-07-29T12:30:00Z",
+    "isVerified": false,
+    "resetToken": null,
+    "resetTokenExpires": null
+  },
+  {
+    "name": "Mohamed Tarek",
+    "email": "mohamed.tarek@example.com",
+    "password": "mtSecure789",
+    "role": "user",
+    "image": "",
+    "OTP": null,
+    "otpExpire": null,
+    "isVerified": false,
+    "resetToken": "abc123resettoken",
+    "resetTokenExpires": "2025-07-30T08:00:00Z"
+  },
+  {
+    "name": "Layla Hassan",
+    "email": "layla.hassan@example.com",
+    "password": "layla4567",
+    "role": "user",
+    "image": "https://example.com/images/layla.png",
+    "OTP": "674829",
+    "otpExpire": "2025-07-29T11:00:00Z",
+    "isVerified": true,
+    "resetToken": null,
+    "resetTokenExpires": null
+  },
+  {
+    "name": "Youssef Khaled",
+    "email": "youssef.khaled@example.com",
+    "password": "ykpass789",
+    "role": "admin",
+    "image": "https://example.com/images/youssef.jpg",
+    "OTP": null,
+    "otpExpire": null,
+    "isVerified": true,
+    "resetToken": null,
+    "resetTokenExpires": null
+  },
+  {
+    "name": "Hana Adel",
+    "email": "hana.adel@example.com",
+    "password": "hana12345",
+    "role": "user",
+    "image": "",
+    "OTP": "765432",
+    "otpExpire": "2025-07-29T09:00:00Z",
+    "isVerified": false,
+    "resetToken": "xyz456reset",
+    "resetTokenExpires": "2025-07-30T10:00:00Z"
+  },
+  {
+    "name": "Ali Zaki",
+    "email": "ali.zaki@example.com",
+    "password": "aliZpass123",
+    "role": "user",
+    "image": "https://example.com/images/ali.jpg",
+    "OTP": null,
+    "otpExpire": null,
+    "isVerified": true,
+    "resetToken": null,
+    "resetTokenExpires": null
+  },
+  {
+    "name": "Nour Samir",
+    "email": "nour.samir@example.com",
+    "password": "nourpass321",
+    "role": "user",
+    "image": "",
+    "OTP": "112233",
+    "otpExpire": "2025-07-29T14:30:00Z",
+    "isVerified": false,
+    "resetToken": null,
+    "resetTokenExpires": null
+  },
+  {
+    "name": "Khaled Mostafa",
+    "email": "khaled.mostafa@example.com",
+    "password": "khaledSecure456",
+    "role": "admin",
+    "image": "https://example.com/images/khaled.jpg",
+    "OTP": null,
+    "otpExpire": null,
+    "isVerified": true,
+    "resetToken": null,
+    "resetTokenExpires": null
+  },
+  {
+    "name": "Mona Fathy",
+    "email": "mona.fathy@example.com",
+    "password": "monaFpass789",
+    "role": "user",
+    "image": "https://example.com/images/mona.jpg",
+    "OTP": "334455",
+    "otpExpire": "2025-07-29T13:15:00Z",
+    "isVerified": true,
+    "resetToken": null,
+    "resetTokenExpires": null
+  }
+]
