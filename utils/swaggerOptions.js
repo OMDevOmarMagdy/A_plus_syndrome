@@ -38,7 +38,7 @@ const swaggerOptions = {
       },
     ],
   },
-  apis: ["./Routes/*.js"],
+  apis: ["./Swagger/*.js"],
 };
 // https://a-plus-syndrome-hba3rcmvv-omdevomarmagdys-projects.vercel.app/
 // http://localhost:5000
