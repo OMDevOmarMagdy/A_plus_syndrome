@@ -9,6 +9,7 @@ exports.addBook = async (req, res, next) => {
     }
 
     const book = await Book.create({ title, author, summary, cover, price });
+    console.log(book);
     res.status(201).json({
       message: "Your book is added",
       data: {

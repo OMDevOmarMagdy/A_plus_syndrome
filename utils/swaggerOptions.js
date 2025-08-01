@@ -8,7 +8,7 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: "https://aplussyndrome-production.up.railway.app/",
+        url: "https://aplussyndrome-production.up.railway.app",
       },
       {
         url: "http://localhost:5000",
