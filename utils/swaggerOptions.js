@@ -6,6 +6,14 @@ const swaggerOptions = {
       version: "1.0.0",
       description: "API documentation for A+ Syndrome site",
     },
+    servers: [
+      {
+        url: "https://aplussyndrome-production.up.railway.app/",
+      },
+      {
+        url: "http://localhost:5000",
+      },
+    ],
     components: {
       schemas: {
         User: {
@@ -30,46 +38,40 @@ const swaggerOptions = {
             },
           },
         },
+        Book: {
+          type: "object",
+          required: ["title", "author", "summary", "cover", "price"],
+          properties: {
+            _id: {
+              type: "string",
+              example: "64c7a8f7e63e5f38f0e7c999",
+            },
+            title: {
+              type: "string",
+              example: "The Art of War",
+            },
+            author: {
+              type: "string",
+              example: "Sun Tzu",
+            },
+            summary: {
+              type: "string",
+              example: "A book about military strategy.",
+            },
+            cover: {
+              type: "string",
+              example: "https://example.com/cover.jpg",
+            },
+            price: {
+              type: "number",
+              example: 19.99,
+            },
+          },
+        },
       },
-      Book: {
-        type: "object",
-        required: ["title", "author", "summary", "cover", "price"],
-        properties: {
-          _id: {
-            type: "string",
-            example: "64c7a8f7e63e5f38f0e7c999",
-          },
-          title: {
-            type: "string",
-            example: "The Art of War",
-          },
-          author: {
-            type: "string",
-            example: "Sun Tzu",
-          },
-          summary: {
-            type: "string",
-            example: "A book about military strategy.",
-          },
-          cover: {
-            type: "string",
-            example: "https://example.com/cover.jpg",
-          },
-          price: {
-            type: "number",
-            example: 19.99,
-          },
-      }
     },
-    servers: [
-      {
-        url: "https://aplussyndrome-production.up.railway.app/",
-      },
-    ],
   },
   apis: ["./Swagger/*.js"],
 };
-// https://a-plus-syndrome-hba3rcmvv-omdevomarmagdys-projects.vercel.app/
-// http://localhost:5000
 
 module.exports = swaggerOptions;
