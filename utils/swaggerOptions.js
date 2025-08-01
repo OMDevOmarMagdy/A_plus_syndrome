@@ -31,6 +31,35 @@ const swaggerOptions = {
           },
         },
       },
+      Book: {
+        type: "object",
+        required: ["title", "author", "summary", "cover", "price"],
+        properties: {
+          _id: {
+            type: "string",
+            example: "64c7a8f7e63e5f38f0e7c999",
+          },
+          title: {
+            type: "string",
+            example: "The Art of War",
+          },
+          author: {
+            type: "string",
+            example: "Sun Tzu",
+          },
+          summary: {
+            type: "string",
+            example: "A book about military strategy.",
+          },
+          cover: {
+            type: "string",
+            example: "https://example.com/cover.jpg",
+          },
+          price: {
+            type: "number",
+            example: 19.99,
+          },
+      }
     },
     servers: [
       {
