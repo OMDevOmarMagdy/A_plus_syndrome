@@ -38,3 +38,42 @@ exports.getBooks = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.updateBook = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+    const { title, summary, author, price, cover } = req.body;
+
+    const user = await Book.findByIdAndUpdate(
+      userId,
+      { title, summary, author, price, cover },
+      { new: true, runValidators: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: "Book not found" });
+    }
+
+    res.status(200).json({
+      message: "Book updated successfully",
+      data: { user },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.deleteBook = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+    const user = await Book.findByIdAndDelete(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "Book not found" });
+    }
+
+    res.status(200).json({ message: "Book deleted successfully" });
+  } catch (error) {
+    next(error);
+  }
+};
