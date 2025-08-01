@@ -42,10 +42,6 @@ const swaggerOptions = {
           type: "object",
           required: ["title", "author", "summary", "cover", "price"],
           properties: {
-            _id: {
-              type: "string",
-              example: "64c7a8f7e63e5f38f0e7c999",
-            },
             title: {
               type: "string",
               example: "The Art of War",
