@@ -7,7 +7,7 @@
 
 /**
  * @swagger
- * /api/books/add-book:
+ * /api/v1/books/add-book:
  *   post:
  *     summary: Add a new book
  *     tags: [Books]
@@ -39,7 +39,7 @@
 
 /**
  * @swagger
- * /api/books:
+ * /api/v1/books:
  *   get:
  *     summary: Get all books
  *     tags: [Books]
@@ -67,7 +67,7 @@
 
 /**
  * @swagger
- * /api/books/{id}:
+ * /api/v1/books/{id}:
  *   patch:
  *     summary: Update a book by ID
  *     tags: [Books]
@@ -107,7 +107,7 @@
 
 /**
  * @swagger
- * /api/books/{id}:
+ * /api/v1/books/{id}:
  *   delete:
  *     summary: Delete a book by ID
  *     tags: [Books]
