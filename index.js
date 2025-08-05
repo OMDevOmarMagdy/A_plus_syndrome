@@ -24,7 +24,7 @@ app.use(express.json());
 // ============= Swagger =============
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
-// ============= Database Connection =============
+//  ============= Database Connection =============
 const db = process.env.DB_CONNECTION;
 mongoose.connect(db).then(() => {
   console.log("DB Connect Successfully");
