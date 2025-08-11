@@ -32,6 +32,7 @@ exports.getBooks = async (req, res, next) => {
     res.status(200).json({
       message: "Books fetched successfully",
       data: {
+        totalBooks: books.lenght,
         books,
       },
     });
