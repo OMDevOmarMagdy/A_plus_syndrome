@@ -44,7 +44,7 @@ app.use("/api/v1/courses", courseRouter);
 app.use("/api/v1/activity", activityRouter);
 app.use("/api/v1/promocodes", promoCodeRouter);
 
-app.get("/api/v1/all", allController);
+app.get("/api/v1/all", allController.getAllOfThem);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
