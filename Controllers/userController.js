@@ -23,6 +23,7 @@ exports.createUser = async (req, res) => {
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.find().select("-password"); // exclude password
+    console.log(users);
     const numOfUsers = await User.countDocuments();
 
     res.status(200).json({

@@ -9,6 +9,9 @@ const swaggerOptions = require("./utils/swaggerOptions");
 const authRouter = require("./Routes/authRoutes");
 const bookRouter = require("./Routes/bookRoutes");
 const userRouter = require("./Routes/userRoutes");
+const courseRouter = require("./Routes/courseRoutes");
+const activityRouter = require("./Routes/activityRoutes");
+const promoCodeRouter = require("./Routes/promoCodeRoutes");
 
 dotenv.config();
 
@@ -35,6 +38,10 @@ mongoose.connect(db).then(() => {
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/books", bookRouter);
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/courses", courseRouter);
+app.use("/api/v1/activity", activityRouter);
+app.use("/api/v1/promocodes", promoCodeRouter);
+
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // Global error middleware

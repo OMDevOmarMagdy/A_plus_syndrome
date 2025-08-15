@@ -18,8 +18,8 @@ exports.signUp = async (req, res, next) => {
 
     const OTP = generateOTP();
     const otpExpire = Date.now() + 10 * 60 * 1000;
-
     console.log(OTP);
+
     const user = await User.create({
       name,
       email,
@@ -133,24 +133,50 @@ exports.login = async (req, res, next) => {
 // ======================================================================
 
 exports.protect = async (req, res, next) => {
-  // Verifcation the token --> verify that you are the right person to perform this action
   console.log("This is Protect Middleware");
 
   let token;
   if (
     req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
+    req.headers.authorization.toLowerCase().startsWith("bearer")
   ) {
     token = req.headers.authorization.split(" ")[1];
   }
-  console.log(token);
 
   if (!token) {
-    return res.status(400).json({ message: "You are not logged in" });
+    return res.status(401).json({ message: "You are not logged in" });
   }
 
-  const decoded = jwt.verify(token, process.env.JWT_SECRET);
-  console.log(decoded);
+  try {
+    // 1️⃣ Verify token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log(decoded);
+
+    // 2️⃣ Find user
+    const currentUser = await User.findById(decoded.id);
+    if (!currentUser) {
+      return res.status(404).json({ message: "User does not exist" });
+    }
+
+    // 3️⃣ (Optional) Check if user changed password after token was issued
+    if (currentUser.passwordChangedAt) {
+      const changedTimestamp = parseInt(
+        currentUser.passwordChangedAt.getTime() / 1000,
+        10
+      );
+      if (changedTimestamp > decoded.iat) {
+        return res
+          .status(401)
+          .json({ message: "Password was changed. Please log in again." });
+      }
+    }
+
+    // Attach user to request
+    req.user = currentUser;
+    next();
+  } catch (err) {
+    return res.status(401).json({ message: "Invalid or expired token" });
+  }
 };
 
 // ======================================================================
@@ -246,4 +272,3 @@ exports.restrictTo = (...roles) => {
     next();
   };
 };
-

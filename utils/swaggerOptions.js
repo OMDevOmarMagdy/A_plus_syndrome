@@ -15,6 +15,13 @@ const swaggerOptions = {
       },
     ],
     components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT", // optional, but nice to show in Swagger UI
+        },
+      },
       schemas: {
         User: {
           type: "object",
@@ -66,6 +73,11 @@ const swaggerOptions = {
         },
       },
     },
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
   },
   apis: ["./Swagger/*.js"],
 };
