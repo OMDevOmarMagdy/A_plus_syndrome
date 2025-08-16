@@ -71,6 +71,75 @@ const swaggerOptions = {
             },
           },
         },
+        Course: {
+          type: "object",
+          required: ["title", "description", "instructor", "price", "duration"],
+          properties: {
+            title: {
+              type: "string",
+              example: "Mastering Node.js",
+            },
+            description: {
+              type: "string",
+              example: "Learn how to build backend applications with Node.js",
+            },
+            instructor: {
+              type: "string",
+              example: "Omar Magdy",
+            },
+            price: {
+              type: "number",
+              example: 120,
+            },
+            duration: {
+              type: "string",
+              example: "10 weeks",
+            },
+            image: {
+              type: "string",
+              example: "https://example.com/nodejs-course.jpg",
+            },
+            category: {
+              type: "string",
+              enum: ["Programming", "Design", "Marketing", "Business", "Other"],
+              example: "Programming",
+            },
+            createdAt: {
+              type: "string",
+              format: "date-time",
+              example: "2025-08-16T12:34:56.000Z",
+            },
+          },
+        },
+        PromoCode: {
+          type: "object",
+          required: ["code", "discount", "user", "expiresAt"],
+          properties: {
+            code: {
+              type: "string",
+              example: "SAVE20",
+            },
+            discount: {
+              type: "number",
+              example: 20,
+            },
+            user: {
+              type: "string",
+              description:
+                "MongoDB ObjectId of the user this promo is assigned to",
+              example: "64a12345f3a12ef456789124",
+            },
+            expiresAt: {
+              type: "string",
+              format: "date-time",
+              example: "2025-12-31T23:59:59.000Z",
+            },
+            used: {
+              type: "boolean",
+              example: false,
+            },
+          },
+        },
       },
     },
     security: [

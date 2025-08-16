@@ -1,0 +1,32 @@
+[
+  {
+    "code": "WELCOME50",
+    "discount": 50,
+    "user": "64e4b9d9c2a7e5a4b8a9f201",
+    "expiresAt": "2025-12-31T23:59:59.000Z"
+  },
+  {
+    "code": "OMAR10",
+    "discount": 10,
+    "user": "64e4b9d9c2a7e5a4b8a9f202",
+    "expiresAt": "2025-09-30T23:59:59.000Z"
+  },
+  {
+    "code": "BASMA20",
+    "discount": 20,
+    "user": "64e4b9d9c2a7e5a4b8a9f203",
+    "expiresAt": "2025-11-15T23:59:59.000Z"
+  },
+  {
+    "code": "FREEMONTH",
+    "discount": 100,
+    "user": "64e4b9d9c2a7e5a4b8a9f204",
+    "expiresAt": "2025-08-31T23:59:59.000Z"
+  },
+  {
+    "code": "STUDENT25",
+    "discount": 25,
+    "user": "64e4b9d9c2a7e5a4b8a9f205",
+    "expiresAt": "2026-01-31T23:59:59.000Z"
+  }
+]

@@ -1,6 +1,6 @@
 // routes/activityRoutes.js
 const express = require("express");
-const { protect } = require("../middlewares/authMiddleware");
+const { protect } = require("../Controllers/authController");
 const { getLastActivities } = require("../Controllers/activityController");
 
 const router = express.Router();

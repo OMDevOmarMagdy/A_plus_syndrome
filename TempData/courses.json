@@ -1,0 +1,52 @@
+[
+  {
+    "title": "Mastering Node.js",
+    "description": "Learn how to build powerful backend applications using Node.js, Express, and MongoDB.",
+    "instructor": "Omar Magdy",
+    "price": 120,
+    "duration": "10 weeks",
+    "image": "nodejs-course.jpg",
+    "category": "Programming",
+    "createdBy": "64e4b9d9c2a7e5a4b8a9f123"
+  },
+  {
+    "title": "UI/UX Design Fundamentals",
+    "description": "A beginner-friendly course to design modern and user-friendly interfaces.",
+    "instructor": "Basma Abdelaziz",
+    "price": 80,
+    "duration": "6 weeks",
+    "image": "design-course.jpg",
+    "category": "Design",
+    "createdBy": "64e4b9d9c2a7e5a4b8a9f124"
+  },
+  {
+    "title": "Digital Marketing Bootcamp",
+    "description": "Learn SEO, social media strategies, and online ads to grow businesses effectively.",
+    "instructor": "Ahmed Ali",
+    "price": 95,
+    "duration": "8 weeks",
+    "image": "marketing-course.jpg",
+    "category": "Marketing",
+    "createdBy": "64e4b9d9c2a7e5a4b8a9f125"
+  },
+  {
+    "title": "Entrepreneurship 101",
+    "description": "Step-by-step guide to building a startup, raising funds, and managing growth.",
+    "instructor": "Sara Khaled",
+    "price": 150,
+    "duration": "12 weeks",
+    "image": "business-course.jpg",
+    "category": "Business",
+    "createdBy": "64e4b9d9c2a7e5a4b8a9f126"
+  },
+  {
+    "title": "Photography for Beginners",
+    "description": "Learn the art of photography using just your phone or DSLR camera.",
+    "instructor": "Mona Hassan",
+    "price": 60,
+    "duration": "4 weeks",
+    "image": "photography-course.jpg",
+    "category": "Other",
+    "createdBy": "64e4b9d9c2a7e5a4b8a9f127"
+  }
+]

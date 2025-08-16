@@ -1,6 +1,6 @@
 // routes/promoCodeRoutes.js
 const express = require("express");
-const { protect } = require("../middlewares/authMiddleware");
+const { protect } = require("../Controllers/authController");
 const { createPromoCode } = require("../Controllers/promoCodeController");
 
 const router = express.Router();

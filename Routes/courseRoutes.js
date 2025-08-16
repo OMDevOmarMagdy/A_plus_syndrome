@@ -1,6 +1,6 @@
 // routes/courseRoutes.js
 const express = require("express");
-const { protect } = require("../middlewares/authMiddleware");
+const { protect } = require("../Controllers/authController");
 const {
   addCourse,
   updateCourse,
