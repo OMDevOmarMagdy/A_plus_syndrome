@@ -24,6 +24,10 @@ const promoCodeSchema = new mongoose.Schema(
       type: Date,
       required: [true, "Expiration date is required"],
     },
+    used: {
+      type: "boolean",
+      example: false,
+    },
   },
   { timestamps: true }
 );
