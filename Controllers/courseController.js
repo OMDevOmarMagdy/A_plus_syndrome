@@ -75,7 +75,7 @@ exports.deleteCourse = async (req, res) => {
 exports.getAllCourses = async (req, res) => {
   try {
     const courses = await Course.find().populate("createdBy", "name email");
-    res.status(200).json(courses);
+    res.status(200).json({ message: "Success", data: { courses } });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -92,7 +92,7 @@ exports.getCourseById = async (req, res) => {
       return res.status(404).json({ message: "Course not found" });
     }
 
-    res.status(200).json(course);
+    res.status(200).json({ message: "Success", data: { course } });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

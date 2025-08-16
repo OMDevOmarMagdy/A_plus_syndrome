@@ -10,6 +10,8 @@ exports.getAllOfThem = async (req, res, next) => {
     const promocodes = await PromoCode.find();
     const courses = await Course.find();
 
+    console.log(users, "\n", books, "\n", promocodes, "\n", courses, "\n");
+
     if (!users || !books || !promocodes || !courses) {
       return res.status(404).json({ message: "Not found" });
     }

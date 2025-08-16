@@ -2,6 +2,6 @@ const express = require("express");
 const router = express.Router();
 const allController = require("../Controllers/allController");
 
-router.get("/", allController.getAllOfThem); // Assuming you have a method named `getAll` in your controller
+router.get("/", allController.getAllOfThem);
 
 module.exports = router;
