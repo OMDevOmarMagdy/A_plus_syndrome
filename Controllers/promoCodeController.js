@@ -33,7 +33,7 @@ exports.createPromoCode = async (req, res) => {
     await ActivityLog.create({
       action: "PROMO_CODE",
       description: `Promo code "${code}" created for user ${targetUser.name}`,
-      user: req.user._id,
+      user: userId,
     });
 
     res.status(201).json({ message: "Promo code created successfully", promo });
