@@ -1,10 +1,9 @@
 // routes/activityRoutes.js
 const express = require("express");
 const { protect } = require("../Controllers/authController");
-const { getLastActivities } = require("../Controllers/activityController");
-
+const { getLastLogs } = require("../Controllers/activityController");
 const router = express.Router();
 
-router.get("/last", protect, getLastActivities);
+router.get("/last", protect, getLastLogs);
 
 module.exports = router;

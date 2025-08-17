@@ -18,13 +18,20 @@ exports.addCourse = async (req, res, next) => {
       createdBy: req.user._id,
     });
 
-    await ActivityLog.create({
+    const activityLogs = await ActivityLog.create({
       action: "ADD",
-      description: `Course "${title}" was added`,
+      description: `Course "${course.title}" was added`,
       user: req.user._id,
+      type: "course",
     });
+    console.log(activityLogs);
 
-    res.status(201).json({ message: "Course added successfully", course });
+    res.status(201).json({
+      message: "Course added successfully",
+      data: {
+        course,
+      },
+    });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -44,6 +51,7 @@ exports.updateCourse = async (req, res) => {
       action: "UPDATE",
       description: `Course "${course.title}" was updated`,
       user: req.user._id,
+      type: "course",
     });
 
     res.status(200).json({ message: "Course updated successfully", course });
@@ -64,6 +72,7 @@ exports.deleteCourse = async (req, res) => {
       action: "DELETE",
       description: `Course "${course.title}" was deleted`,
       user: req.user._id,
+      type: "course",
     });
 
     res.status(200).json({ message: "Course deleted successfully" });

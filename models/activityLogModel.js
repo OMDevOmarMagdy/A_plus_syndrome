@@ -1,4 +1,3 @@
-// models/activityLogModel.js
 const mongoose = require("mongoose");
 
 const activityLogSchema = new mongoose.Schema(
@@ -16,8 +15,13 @@ const activityLogSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+    type: {
+      type: String,
+      required: [true, "Activity logs required"],
+      enum: ["course", "book", "promoCode"],
+    },
   },
-  { timestamps: true } // دا بيضيف createdAt و updatedAt تلقائيًا
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("ActivityLog", activityLogSchema);

@@ -34,6 +34,7 @@ exports.createPromoCode = async (req, res) => {
       action: "PROMO_CODE",
       description: `Promo code "${code}" created for user ${targetUser.name}`,
       user: userId,
+      type: "promoCode",
     });
 
     res.status(201).json({ message: "Promo code created successfully", promo });

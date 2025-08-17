@@ -1,4 +1,5 @@
 const Book = require("../models/bookModel");
+const ActivityLog = require("../models/activityLogModel");
 
 exports.addBook = async (req, res, next) => {
   try {
@@ -10,6 +11,14 @@ exports.addBook = async (req, res, next) => {
 
     const book = await Book.create({ title, author, summary, cover, price });
     console.log(book);
+
+    await ActivityLog.create({
+      action: "ADD",
+      description: `Book "${book.title}" was added`,
+      user: req.user._id,
+      type: "book",
+    });
+
     res.status(201).json({
       message: "Your book is added",
       data: {
@@ -43,36 +52,51 @@ exports.getBooks = async (req, res, next) => {
 
 exports.updateBook = async (req, res, next) => {
   try {
-    const userId = req.params.id;
+    const bookId = req.params.id;
     const { title, summary, author, price, cover } = req.body;
 
-    const user = await Book.findByIdAndUpdate(
-      userId,
+    const book = await Book.findByIdAndUpdate(
+      bookId,
       { title, summary, author, price, cover },
       { new: true, runValidators: true }
     );
+    console.log(book);
 
-    if (!user) {
+    if (!book) {
       return res.status(404).json({ message: "Book not found" });
     }
 
+    await ActivityLog.create({
+      action: "UPDATE",
+      description: `Book "${book.title}" was updated`,
+      user: req.user._id,
+      type: "book",
+    });
+
     res.status(200).json({
       message: "Book updated successfully",
-      data: { user },
+      data: { book },
     });
   } catch (error) {
-    next(error);
+    res.status(500).json({ message: error.message });
   }
 };
 
 exports.deleteBook = async (req, res, next) => {
   try {
-    const userId = req.params.id;
-    const user = await Book.findByIdAndDelete(userId);
+    const bookId = req.params.id;
+    const book = await Book.findByIdAndDelete(bookId);
 
-    if (!user) {
+    if (!book) {
       return res.status(404).json({ message: "Book not found" });
     }
+
+    await ActivityLog.create({
+      action: "DELETE",
+      description: `Book "${book.title}" was deleted`,
+      user: req.user._id,
+      type: "book",
+    });
 
     res.status(200).json({ message: "Book deleted successfully" });
   } catch (error) {

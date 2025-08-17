@@ -14,6 +14,7 @@ const activityRouter = require("./Routes/activityRoutes");
 const promoCodeRouter = require("./Routes/promoCodeRoutes");
 
 const allRouter = require("./Routes/allRoutes");
+const activitylogsRouter = require("./Routes/activityRoutes");
 
 dotenv.config();
 
@@ -44,6 +45,7 @@ app.use("/api/v1/courses", courseRouter);
 app.use("/api/v1/activity", activityRouter);
 app.use("/api/v1/promocodes", promoCodeRouter);
 app.use("/api/v1/all", allRouter);
+app.use("/api/v1/activitylogs", activitylogsRouter);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
