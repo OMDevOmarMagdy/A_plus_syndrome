@@ -3,6 +3,8 @@ const ActivityLog = require("../models/activityLogModel");
 exports.getLastLogs = async (req, res) => {
   try {
     const lastLogs = await ActivityLog.aggregate([
+      // Exclude documents with null or missing type
+      { $match: { type: { $ne: null } } },
       // Sort newest first
       { $sort: { createdAt: -1 } },
       // Group by type (book, course, promoCode)
