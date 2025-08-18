@@ -2,7 +2,7 @@
 const Course = require("../models/courseModel");
 const ActivityLog = require("../models/activityLogModel");
 const UserCourse = require("../models/userCourseModel");
-const User = require("../models/User");
+const User = require("../models/userModel");
 
 exports.addCourse = async (req, res, next) => {
   try {
