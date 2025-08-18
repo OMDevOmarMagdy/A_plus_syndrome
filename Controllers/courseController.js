@@ -1,6 +1,8 @@
 // controllers/courseController.js
 const Course = require("../models/courseModel");
 const ActivityLog = require("../models/activityLogModel");
+const UserCourse = require("../models/userCourseModel");
+const User = require("../models/User");
 
 exports.addCourse = async (req, res, next) => {
   try {
@@ -104,5 +106,46 @@ exports.getCourseById = async (req, res) => {
     res.status(200).json({ message: "Success", data: { course } });
   } catch (err) {
     res.status(500).json({ message: err.message });
+  }
+};
+
+exports.openCourse = async (req, res, next) => {
+  try {
+    const { email, courseName } = req.body;
+
+    // Find user by email
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Find course by name
+    const course = await Course.findOne({ title: courseName });
+    if (!course) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+
+    // Check if record exists
+    let userCourse = await UserCourse.findOne({
+      userId: user._id,
+      courseId: course._id,
+    });
+    if (userCourse) {
+      userCourse.status = "active"; // Reactivate
+      await userCourse.save();
+    } else {
+      userCourse = await UserCourse.create({
+        userId: user._id,
+        courseId: course._id,
+        status: "active",
+      });
+    }
+
+    res.json({
+      message: `✅ Course "${course.title}" unlocked for user ${user.email}`,
+      userCourse,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong", error });
   }
 };

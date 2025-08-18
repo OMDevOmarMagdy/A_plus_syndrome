@@ -7,11 +7,13 @@ const {
   deleteCourse,
   getAllCourses,
   getCourseById,
+  openCourse,
 } = require("../Controllers/courseController");
 
 const router = express.Router();
 
 router.route("/").get(getAllCourses).post(protect, addCourse);
+router.post("/open-course", openCourse);
 
 router
   .route("/:id")

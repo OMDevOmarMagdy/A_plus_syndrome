@@ -162,3 +162,57 @@
  *       404:
  *         description: Course not found
  */
+
+/**
+ * @swagger
+ * /api/v1/courses/open-course:
+ *   post:
+ *     summary: Unlock a course for a user by email and course name
+ *     tags: [Courses]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - courseName
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: student@example.com
+ *               courseName:
+ *                 type: string
+ *                 example: JavaScript Basics
+ *     responses:
+ *       200:
+ *         description: Course unlocked successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: ✅ Course "JavaScript Basics" unlocked for user student@example.com
+ *                 userCourse:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       example: 64fa7e1b9c2a7e5a4b8a9f123
+ *                     userId:
+ *                       type: string
+ *                       example: 64fa1a3d9c2a7e5a4b8a9f456
+ *                     courseId:
+ *                       type: string
+ *                       example: 64fa3b6f9c2a7e5a4b8a9f789
+ *                     status:
+ *                       type: string
+ *                       example: active
+ *       404:
+ *         description: User or Course not found
+ *       500:
+ *         description: Something went wrong
+ */
