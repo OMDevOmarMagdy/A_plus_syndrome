@@ -141,6 +141,12 @@ exports.openCourse = async (req, res, next) => {
       });
     }
 
+    // Add this course to user courses --> paid
+    if (!user.courses.includes(course._id)) {
+      user.courses.push(course._id);
+      user.save();
+    }
+
     res.json({
       message: `✅ Course "${course.title}" unlocked for user ${user.email}`,
       userCourse,

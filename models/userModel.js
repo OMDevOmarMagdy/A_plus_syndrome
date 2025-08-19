@@ -33,6 +33,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    courses: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Course",
+    },
     OTP: String,
     otpExpire: Date,
     isVerified: {

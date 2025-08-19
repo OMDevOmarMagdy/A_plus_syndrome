@@ -206,3 +206,69 @@
  *           type: string
  *           example: 2025-08-11T12:00:00.000Z
  */
+
+
+/**
+ * @swagger
+ * /api/v1/users/{id}/courses:
+ *   get:
+ *     summary: Get all courses for a specific user
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: User ID
+ *         example: 66c1a45f9d12a2b3c4d5e6f7
+ *     responses:
+ *       200:
+ *         description: List of courses for the user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                         example: 66c1a46a1a23b4c5d6e7f8g9
+ *                       title:
+ *                         type: string
+ *                         example: Learning Database from scratch
+ *                       description:
+ *                         type: string
+ *                         example: you will learn everything about databases
+ *                       instructor:
+ *                         type: string
+ *                         example: John Doe
+ *                       price:
+ *                         type: number
+ *                         example: 119
+ *                       duration:
+ *                         type: string
+ *                         example: "10 hours"
+ *                       image:
+ *                         type: string
+ *                         example: course-image.jpg
+ *                       category:
+ *                         type: string
+ *                         example: Programming
+ *                       createdBy:
+ *                         type: string
+ *                         example: 66c1a45f9d12a2b3c4d5e6f7
+ *       404:
+ *         description: User not found
+ *       400:
+ *         description: Invalid request
+ */

@@ -96,3 +96,19 @@ exports.deleteUser = async (req, res) => {
     res.status(400).json({ status: "fail", message: err.message });
   }
 };
+
+exports.getAllCoursesToSpecificUser = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+    const user = await User.findById(userId).populate("courses");
+
+    if (!user) {
+      res.status(404).json({ status: "fail", message: "User not found" });
+    }
+
+    res.status(200).json({ status: "success", data: user.courses });
+    
+  } catch (error) {
+    res.status(400).json({ status: "fail", message: error.message });
+  }
+};

@@ -16,4 +16,6 @@ router
   .patch(protect, restrictTo("admin", "user"), userController.updateUser)
   .delete(protect, restrictTo("admin", "user"), userController.deleteUser);
 
+router.get("/:id/courses", protect, userController.getAllCoursesToSpecificUser); // only logged in users can access this route
+
 module.exports = router;
