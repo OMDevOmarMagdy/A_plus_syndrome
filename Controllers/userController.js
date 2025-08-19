@@ -1,4 +1,5 @@
 const User = require("../models/userModel");
+const Course = require("../models/courseModel");
 
 // 📌 Create User
 exports.createUser = async (req, res) => {
@@ -99,15 +100,23 @@ exports.deleteUser = async (req, res) => {
 
 exports.getAllCoursesToSpecificUser = async (req, res, next) => {
   try {
+    // Get userId and User and check
     const userId = req.params.id;
     const user = await User.findById(userId).populate("courses");
-
     if (!user) {
       res.status(404).json({ status: "fail", message: "User not found" });
     }
 
-    res.status(200).json({ status: "success", data: user.courses });
-    
+    // Get all courses except the ones user already has
+    const excludedCourses = user.courses.map((c) => c._id);
+    const otherCourses = await Course.find({ _id: { $nin: excludedCourses } });
+
+    // Response
+    res.status(200).json({
+      status: "success",
+      userCourses: user.courses,
+      otherCourses: otherCourses,
+    });
   } catch (error) {
     res.status(400).json({ status: "fail", message: error.message });
   }

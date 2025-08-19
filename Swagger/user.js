@@ -207,12 +207,11 @@
  *           example: 2025-08-11T12:00:00.000Z
  */
 
-
 /**
  * @swagger
  * /api/v1/users/{id}/courses:
  *   get:
- *     summary: Get all courses for a specific user
+ *     summary: Get all courses for a specific user (user's courses + other available courses)
  *     tags: [Users]
  *     security:
  *       - bearerAuth: []
@@ -226,7 +225,7 @@
  *         example: 66c1a45f9d12a2b3c4d5e6f7
  *     responses:
  *       200:
- *         description: List of courses for the user
+ *         description: List of courses for the user and other courses not yet enrolled
  *         content:
  *           application/json:
  *             schema:
@@ -235,8 +234,9 @@
  *                 status:
  *                   type: string
  *                   example: success
- *                 data:
+ *                 userCourses:
  *                   type: array
+ *                   description: Courses the user is enrolled in
  *                   items:
  *                     type: object
  *                     properties:
@@ -248,7 +248,7 @@
  *                         example: Learning Database from scratch
  *                       description:
  *                         type: string
- *                         example: you will learn everything about databases
+ *                         example: You will learn everything about databases
  *                       instructor:
  *                         type: string
  *                         example: John Doe
@@ -264,6 +264,39 @@
  *                       category:
  *                         type: string
  *                         example: Programming
+ *                       createdBy:
+ *                         type: string
+ *                         example: 66c1a45f9d12a2b3c4d5e6f7
+ *                 otherCourses:
+ *                   type: array
+ *                   description: Courses not enrolled by the user
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                         example: 77d2b47a2e34c5d6f7g8h9i0
+ *                       title:
+ *                         type: string
+ *                         example: Mastering Node.js
+ *                       description:
+ *                         type: string
+ *                         example: Complete Node.js course for backend developers
+ *                       instructor:
+ *                         type: string
+ *                         example: Jane Smith
+ *                       price:
+ *                         type: number
+ *                         example: 149
+ *                       duration:
+ *                         type: string
+ *                         example: "15 hours"
+ *                       image:
+ *                         type: string
+ *                         example: node-course.jpg
+ *                       category:
+ *                         type: string
+ *                         example: Web Development
  *                       createdBy:
  *                         type: string
  *                         example: 66c1a45f9d12a2b3c4d5e6f7
