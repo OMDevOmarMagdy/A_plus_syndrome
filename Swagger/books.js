@@ -21,7 +21,7 @@
  *               title:
  *                 type: string
  *                 example: "Clean Code"
- *               description:
+ *               summary:
  *                 type: string
  *                 example: "A handbook of agile software craftsmanship."
  *               cover:
@@ -100,7 +100,7 @@
  *               title:
  *                 type: string
  *                 example: "Clean Code Updated"
- *               description:
+ *               summary:
  *                 type: string
  *                 example: "Updated description"
  *               cover:
