@@ -3,6 +3,39 @@ const ActivityLog = require("../models/activityLogModel");
 
 exports.addBook = async (req, res, next) => {
   try {
+    const { title, author, summary, price } = req.body;
+    const cover = req.file ? req.file.key : null; // file uploaded to S3
+
+    if (!title || !author || !summary || !price || !cover) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    // Create the book with cover image
+    const book = await Book.create({ title, author, summary, price, cover });
+    console.log(book);
+
+    // Log activity
+    await ActivityLog.create({
+      action: "ADD",
+      description: `Book "${book.title}" was added`,
+      user: req.user._id,
+      type: "book",
+    });
+
+    res.status(201).json({
+      message: "Your book is added",
+      data: {
+        book,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/*
+exports.addBook = async (req, res, next) => {
+  try {
     const { title, author, summary, cover, price } = req.body;
 
     if (!title || !author || !summary || !cover || !price) {
@@ -29,6 +62,7 @@ exports.addBook = async (req, res, next) => {
     next(error);
   }
 };
+*/
 
 exports.getBooks = async (req, res, next) => {
   try {
@@ -50,6 +84,50 @@ exports.getBooks = async (req, res, next) => {
   }
 };
 
+exports.updateBook = async (req, res, next) => {
+  try {
+    const bookId = req.params.id;
+
+    // text fields from body
+    const { title, summary, author, price } = req.body;
+    // file (cover) from multer-S3
+    const cover = req.file ? req.file.key : undefined;
+
+    // build update object dynamically (ignore undefined fields)
+    const updateData = {};
+    if (title) updateData.title = title;
+    if (summary) updateData.summary = summary;
+    if (author) updateData.author = author;
+    if (price) updateData.price = price;
+    if (cover) updateData.cover = cover;
+
+    const book = await Book.findByIdAndUpdate(bookId, updateData, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!book) {
+      return res.status(404).json({ message: "Book not found" });
+    }
+
+    // Log update activity
+    await ActivityLog.create({
+      action: "UPDATE",
+      description: `Book "${book.title}" was updated`,
+      user: req.user ? req.user._id : null, // 👈 safe access
+      type: "book",
+    });
+
+    res.status(200).json({
+      message: "Book updated successfully",
+      data: { book },
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+/*
 exports.updateBook = async (req, res, next) => {
   try {
     const bookId = req.params.id;
@@ -81,6 +159,7 @@ exports.updateBook = async (req, res, next) => {
     res.status(500).json({ message: error.message });
   }
 };
+*/
 
 exports.deleteBook = async (req, res, next) => {
   try {

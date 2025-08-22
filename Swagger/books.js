@@ -7,16 +7,33 @@
 
 /**
  * @swagger
- * /api/v1/books/add-book:
+ * /api/v1/books:
  *   post:
  *     summary: Add a new book
  *     tags: [Books]
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
- *             $ref: '#/components/schemas/Book'
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 example: "Clean Code"
+ *               author:
+ *                 type: string
+ *                 example: "Robert C. Martin"
+ *               description:
+ *                 type: string
+ *                 example: "A handbook of agile software craftsmanship."
+ *               price:
+ *                 type: number
+ *                 example: 19.99
+ *               cover:
+ *                 type: string
+ *                 format: binary
+ *                 description: Upload book cover image
  *     responses:
  *       201:
  *         description: Book added successfully
@@ -82,9 +99,26 @@
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
- *             $ref: '#/components/schemas/Book'
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 example: "Clean Code Updated"
+ *               author:
+ *                 type: string
+ *                 example: "Robert C. Martin"
+ *               description:
+ *                 type: string
+ *                 example: "Updated description"
+ *               price:
+ *                 type: number
+ *                 example: 25.99
+ *               cover:
+ *                 type: string
+ *                 format: binary
+ *                 description: Upload new cover image
  *     responses:
  *       200:
  *         description: Book updated successfully
@@ -99,7 +133,7 @@
  *                 data:
  *                   type: object
  *                   properties:
- *                     user:
+ *                     book:
  *                       $ref: '#/components/schemas/Book'
  *       404:
  *         description: Book not found
