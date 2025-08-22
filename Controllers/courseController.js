@@ -161,6 +161,7 @@ exports.updateCourse = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+*/
 
 exports.deleteCourse = async (req, res) => {
   try {
@@ -182,7 +183,7 @@ exports.deleteCourse = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-*/
+
 
 exports.getAllCourses = async (req, res) => {
   try {
