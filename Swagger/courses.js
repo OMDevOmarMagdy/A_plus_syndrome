@@ -32,12 +32,6 @@
  *         multipart/form-data:
  *           schema:
  *             type: object
- *             required:
- *               - title
- *               - description
- *               - instructor
- *               - price
- *               - duration
  *             properties:
  *               title:
  *                 type: string
@@ -45,19 +39,6 @@
  *               description:
  *                 type: string
  *                 example: Learn how to build backend applications with Node.js
- *               instructor:
- *                 type: string
- *                 example: Omar Magdy
- *               price:
- *                 type: number
- *                 example: 120
- *               duration:
- *                 type: string
- *                 example: 10 weeks
- *               category:
- *                 type: string
- *                 enum: [Programming, Design, Marketing, Business, Other]
- *                 example: Programming
  *               image:
  *                 type: string
  *                 format: binary

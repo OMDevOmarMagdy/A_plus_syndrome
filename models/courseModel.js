@@ -14,16 +14,13 @@ const courseSchema = new mongoose.Schema(
     },
     instructor: {
       type: String,
-      required: [true, "Instructor name is required"],
     },
     price: {
       type: Number,
-      required: [true, "Course price is required"],
       min: [0, "Price cannot be negative"],
     },
     duration: {
       type: String,
-      required: [true, "Course duration is required"],
     },
 
     // ✅ Course cover image
