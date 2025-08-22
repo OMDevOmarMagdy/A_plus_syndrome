@@ -25,10 +25,20 @@ const courseSchema = new mongoose.Schema(
       type: String,
       required: [true, "Course duration is required"],
     },
+
+    // ✅ Course cover image
     image: {
-      type: String,
+      type: String, // will store S3 fileKey
       default: "default-course.jpg",
     },
+
+    // ✅ Course videos
+    videos: [
+      {
+        fileKey: { type: String, required: true },
+        uploadedAt: { type: Date, default: Date.now },
+      },
+    ],
     category: {
       type: String,
       enum: ["Programming", "Design", "Marketing", "Business", "Other"],

@@ -1,4 +1,6 @@
 const dotenv = require("dotenv");
+dotenv.config();
+
 const express = require("express");
 const mongoose = require("mongoose");
 
@@ -16,13 +18,14 @@ const promoCodeRouter = require("./Routes/promoCodeRoutes");
 const allRouter = require("./Routes/allRoutes");
 const activitylogsRouter = require("./Routes/activityRoutes");
 
-dotenv.config();
+const uploadRouter = require("./Routes/uploadRoutes");
 
 // ============= Create the App =============
 const app = express();
 
 // ============= Cors =============
 const cors = require("cors");
+const { updateBook } = require("./Controllers/bookController");
 app.use(cors());
 
 // ============= Middlewares =============
@@ -46,6 +49,9 @@ app.use("/api/v1/activity", activityRouter);
 app.use("/api/v1/promocodes", promoCodeRouter);
 app.use("/api/v1/all", allRouter);
 app.use("/api/v1/activitylogs", activitylogsRouter);
+
+// Upload image or vidoes and get it
+app.use("/api/v1/upload", uploadRouter);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 

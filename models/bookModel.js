@@ -17,6 +17,12 @@ const bookSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  files: [
+    {
+      fileKey: { type: String, required: true }, // S3 key
+      uploadedAt: { type: Date, default: Date.now },
+    },
+  ],
   author: {
     type: String,
     required: true,
