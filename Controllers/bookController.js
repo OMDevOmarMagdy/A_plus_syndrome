@@ -6,8 +6,8 @@ exports.addBook = async (req, res, next) => {
     const { title, summary } = req.body;
     const cover = req.file ? req.file.key : null; // file uploaded to S3
 
-    if (!title || !summary || !cover) {
-      return res.status(400).json({ message: "All fields are required" });
+    if (!title || !summary) {
+      return res.status(400).json({ message: "All fields are required.........." });
     }
 
     // Create the book with cover image
