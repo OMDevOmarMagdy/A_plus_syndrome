@@ -22,14 +22,14 @@
  *                 $ref: '#/components/schemas/Course'
  *
  *   post:
- *     summary: Create a new course
+ *     summary: Create a new course (with image + videos)
  *     tags: [Courses]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             required:
@@ -38,7 +38,6 @@
  *               - instructor
  *               - price
  *               - duration
- *               - createdBy
  *             properties:
  *               title:
  *                 type: string
@@ -55,16 +54,20 @@
  *               duration:
  *                 type: string
  *                 example: 10 weeks
- *               image:
- *                 type: string
- *                 example: nodejs-course.jpg
  *               category:
  *                 type: string
  *                 enum: [Programming, Design, Marketing, Business, Other]
  *                 example: Programming
- *               createdBy:
+ *               image:
  *                 type: string
- *                 example: 64e4b9d9c2a7e5a4b8a9f123
+ *                 format: binary
+ *                 description: Upload a single course cover image
+ *               videos:
+ *                 type: array
+ *                 description: Upload one or more course videos
+ *                 items:
+ *                   type: string
+ *                   format: binary
  *     responses:
  *       201:
  *         description: Course created successfully
@@ -95,8 +98,8 @@
  *       404:
  *         description: Course not found
  *
- *   put:
- *     summary: Update a course by ID
+ *   patch:
+ *     summary: Update a course by ID (with image + videos)
  *     tags: [Courses]
  *     security:
  *       - bearerAuth: []
@@ -110,7 +113,7 @@
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             properties:
@@ -129,13 +132,20 @@
  *               duration:
  *                 type: string
  *                 example: 12 weeks
- *               image:
- *                 type: string
- *                 example: updated-course.jpg
  *               category:
  *                 type: string
  *                 enum: [Programming, Design, Marketing, Business, Other]
  *                 example: Design
+ *               image:
+ *                 type: string
+ *                 format: binary
+ *                 description: Upload a new course cover image
+ *               videos:
+ *                 type: array
+ *                 description: Upload one or more new course videos (they will be appended)
+ *                 items:
+ *                   type: string
+ *                   format: binary
  *     responses:
  *       200:
  *         description: Course updated successfully
@@ -188,29 +198,6 @@
  *     responses:
  *       200:
  *         description: Course unlocked successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: ✅ Course "JavaScript Basics" unlocked for user student@example.com
- *                 userCourse:
- *                   type: object
- *                   properties:
- *                     _id:
- *                       type: string
- *                       example: 64fa7e1b9c2a7e5a4b8a9f123
- *                     userId:
- *                       type: string
- *                       example: 64fa1a3d9c2a7e5a4b8a9f456
- *                     courseId:
- *                       type: string
- *                       example: 64fa3b6f9c2a7e5a4b8a9f789
- *                     status:
- *                       type: string
- *                       example: active
  *       404:
  *         description: User or Course not found
  *       500:

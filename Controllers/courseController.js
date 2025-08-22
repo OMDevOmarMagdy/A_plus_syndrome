@@ -6,7 +6,55 @@ const User = require("../models/userModel");
 
 exports.addCourse = async (req, res, next) => {
   try {
-    const { title, description, instructor, price, duration, image, category } =
+    // Handle image (single file)
+    const image = req.files?.image
+      ? req.files.image[0].key
+      : "default-course.jpg";
+
+    // Handle videos (multiple files -> map into objects)
+    const videos = req.files?.videos
+      ? req.files.videos.map((file) => ({
+          fileKey: file.key,
+          uploadedAt: new Date(),
+        }))
+      : [];
+
+    const { title, description, instructor, price, duration, category } =
+      req.body;
+
+    const course = await Course.create({
+      title,
+      description,
+      instructor,
+      price,
+      duration,
+      category,
+      image,
+      videos, // ✅ structured video objects
+      createdBy: req.user._id,
+    });
+
+    await ActivityLog.create({
+      action: "ADD",
+      description: `Course "${course.title}" was added`,
+      user: req.user._id,
+      type: "course",
+    });
+
+    res.status(201).json({
+      message: "Course added successfully",
+      data: { course },
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+/*
+exports.addCourse = async (req, res, next) => {
+  try {
+    const image = req.file ? req.file.key : null; // file uploaded to S3
+    const { title, description, instructor, price, duration, category } =
       req.body;
 
     const course = await Course.create({
@@ -38,7 +86,59 @@ exports.addCourse = async (req, res, next) => {
     res.status(500).json({ message: err.message });
   }
 };
+*/
 
+exports.updateCourse = async (req, res) => {
+  try {
+    const updates = { ...req.body };
+
+    // Handle image update (if new image uploaded)
+    if (req.files?.image) {
+      updates.image = req.files.image[0].key;
+    }
+
+    // Handle videos update (if new videos uploaded → append)
+    let newVideos = [];
+    if (req.files?.videos) {
+      newVideos = req.files.videos.map((file) => ({
+        fileKey: file.key,
+        uploadedAt: new Date(),
+      }));
+    }
+
+    // Fetch course
+    const course = await Course.findById(req.params.id);
+    if (!course) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+
+    // Apply updates
+    Object.assign(course, updates);
+
+    // Append new videos if any
+    if (newVideos.length > 0) {
+      course.videos.push(...newVideos);
+    }
+
+    await course.save();
+
+    await ActivityLog.create({
+      action: "UPDATE",
+      description: `Course "${course.title}" was updated`,
+      user: req.user._id,
+      type: "course",
+    });
+
+    res.status(200).json({
+      message: "Course updated successfully",
+      course,
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+/*
 exports.updateCourse = async (req, res) => {
   try {
     const course = await Course.findByIdAndUpdate(req.params.id, req.body, {
@@ -82,6 +182,7 @@ exports.deleteCourse = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+*/
 
 exports.getAllCourses = async (req, res) => {
   try {
