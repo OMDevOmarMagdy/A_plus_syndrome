@@ -21,15 +21,9 @@
  *               title:
  *                 type: string
  *                 example: "Clean Code"
- *               author:
- *                 type: string
- *                 example: "Robert C. Martin"
  *               description:
  *                 type: string
  *                 example: "A handbook of agile software craftsmanship."
- *               price:
- *                 type: number
- *                 example: 19.99
  *               cover:
  *                 type: string
  *                 format: binary
@@ -106,15 +100,9 @@
  *               title:
  *                 type: string
  *                 example: "Clean Code Updated"
- *               author:
- *                 type: string
- *                 example: "Robert C. Martin"
  *               description:
  *                 type: string
  *                 example: "Updated description"
- *               price:
- *                 type: number
- *                 example: 25.99
  *               cover:
  *                 type: string
  *                 format: binary

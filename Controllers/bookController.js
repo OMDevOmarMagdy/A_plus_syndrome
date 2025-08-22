@@ -3,15 +3,15 @@ const ActivityLog = require("../models/activityLogModel");
 
 exports.addBook = async (req, res, next) => {
   try {
-    const { title, author, summary, price } = req.body;
+    const { title, summary } = req.body;
     const cover = req.file ? req.file.key : null; // file uploaded to S3
 
-    if (!title || !author || !summary || !price || !cover) {
+    if (!title || !summary || !cover) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
     // Create the book with cover image
-    const book = await Book.create({ title, author, summary, price, cover });
+    const book = await Book.create({ title, summary, cover });
     console.log(book);
 
     // Log activity
