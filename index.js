@@ -18,7 +18,7 @@ const promoCodeRouter = require("./Routes/promoCodeRoutes");
 const allRouter = require("./Routes/allRoutes");
 const activitylogsRouter = require("./Routes/activityRoutes");
 const uploadRouter = require("./Routes/uploadRoutes");
-const blockEmailsRouter = require("./Routes/blockEmailsRoutes");
+const blockEmailsRouter = require("./Routes/blockedEmailRoutes");
 
 // ============= Create the App =============
 const app = express();
