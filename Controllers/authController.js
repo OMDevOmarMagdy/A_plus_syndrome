@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 const User = require("../models/userModel");
+const BlockedEmail = require("../models/blockedEmailModel");
 const sendMail = require("../utils/sendMail");
 const generateToken = require("../utils/generateToken");
 const sendmail = require("../utils/sendMail");
@@ -19,6 +20,14 @@ exports.signUp = async (req, res, next) => {
     const OTP = generateOTP();
     const otpExpire = Date.now() + 10 * 60 * 1000;
     console.log(OTP);
+
+    // Check if the user is blokced or not
+    const blocked = await BlockedEmail.findOne({ email });
+    if (blocked) {
+      return res
+        .status(403)
+        .json({ message: "This email is blocked. Contact support." });
+    }
 
     const user = await User.create({
       name,
@@ -96,6 +105,14 @@ exports.login = async (req, res, next) => {
   try {
     // ============= Get email and password =============
     const { email, password } = req.body;
+
+    // Check if the user is blokced or not
+    const blockedLogin = await BlockedEmail.findOne({ email });
+    if (blockedLogin) {
+      return res
+        .status(403)
+        .json({ message: "This email is blocked. Contact support." });
+    }
 
     // ============= User exist or not =============
     const user = await User.findOne({ email }).select("+password");

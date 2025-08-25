@@ -17,8 +17,8 @@ const promoCodeRouter = require("./Routes/promoCodeRoutes");
 
 const allRouter = require("./Routes/allRoutes");
 const activitylogsRouter = require("./Routes/activityRoutes");
-
 const uploadRouter = require("./Routes/uploadRoutes");
+const blockEmailsRouter = require("./Routes/blockEmailsRoutes");
 
 // ============= Create the App =============
 const app = express();
@@ -49,6 +49,7 @@ app.use("/api/v1/activity", activityRouter);
 app.use("/api/v1/promocodes", promoCodeRouter);
 app.use("/api/v1/all", allRouter);
 app.use("/api/v1/activitylogs", activitylogsRouter);
+app.use("/api/v1/block-emails", blockEmailsRouter);
 
 // Upload image or vidoes and get it
 app.use("/api/v1/upload", uploadRouter);
