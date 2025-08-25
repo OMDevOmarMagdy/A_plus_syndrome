@@ -49,6 +49,11 @@
  *                 items:
  *                   type: string
  *                   format: binary
+ *               price:
+ *                 type: number
+ *                 minimum: 0
+ *                 example: 99.99
+ *                 description: Course price (must be ≥ 0)
  *     responses:
  *       201:
  *         description: Course created successfully
