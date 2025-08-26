@@ -7,6 +7,8 @@ const sendMail = require("../utils/sendMail");
 const generateToken = require("../utils/generateToken");
 const crypto = require("crypto-js");
 
+const otpTemplate = require("../utils/templates/otpTemplate");
+
 const generateOTP = () => {
   return Math.floor(100000 + Math.random() * 900000).toString();
 };
@@ -46,11 +48,12 @@ exports.signUp = async (req, res, next) => {
       otpExpire,
     });
 
-    // await sendMail(
-    //   tempUser.email,
-    //   "verify your email (OTP)",
-    //   `Your OTP is: ${OTP}`
-    // );
+    await sendMail(
+      tempUser.email,
+      "verify your email (OTP)",
+      `Your OTP is: ${OTP}`,
+      otpTemplate(tempUser.name, OTP)
+    );
 
     const token = generateToken(tempUser);
 
