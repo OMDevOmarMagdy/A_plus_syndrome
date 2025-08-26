@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 
+const TempUser = require("../models/tempUserModel");
 const User = require("../models/userModel");
 const BlockedEmail = require("../models/blockedEmailModel");
 const sendMail = require("../utils/sendMail");
@@ -18,7 +19,6 @@ exports.signUp = async (req, res, next) => {
 
     const OTP = generateOTP();
     const otpExpire = Date.now() + 10 * 60 * 1000;
-    console.log(OTP);
 
     // Check if the user is blokced or not
     const blocked = await BlockedEmail.findOne({ email });
@@ -28,7 +28,16 @@ exports.signUp = async (req, res, next) => {
         .json({ message: "This email is blocked. Contact support." });
     }
 
-    const user = await User.create({
+    // If email already exists in TempUser or User
+    if (
+      (await User.findOne({ email })) ||
+      (await TempUser.findOne({ email }))
+    ) {
+      return res.status(400).json({ message: "Email already registered" });
+    }
+
+    // Store in TempUser
+    const tempUser = await TempUser.create({
       name,
       email,
       password,
@@ -37,20 +46,13 @@ exports.signUp = async (req, res, next) => {
       otpExpire,
     });
 
-    // I want to be sure for this
-    if (!user) {
-      return res.status(400).json({
-        message: "Something went wrong, please try again",
-      });
-    }
-
     await sendMail(
-      user.email,
+      tempUser.email,
       "verify your email (OTP)",
       `Your OTP is: ${OTP}`
     );
 
-    const token = generateToken(user);
+    const token = generateToken(tempUser);
 
     res.status(201).json({
       message: "OTP sent to your email, Please verify.",
@@ -67,24 +69,28 @@ exports.verifyOTP = async (req, res, next) => {
   try {
     // ============= Get the email and the OTP =============
     const { email, OTP } = req.body;
-    const user = await User.findOne({ email });
+    const tempUser = await TempUser.findOne({ email });
 
-    // ============= Check if the user exist or not =============
-    if (!user) {
-      return res.status(400).json({ message: "User not found" });
+    if (!tempUser) {
+      return res.status(400).json({ message: "No signup request found" });
     }
 
     // ============= Compare the OTP with this one =============
-    if (user.OTP !== OTP || user.otpExpire < Date.now()) {
-      return res.status(400).json({
-        message: "OTP is Invalid or Expired",
-      });
+    if (tempUser.OTP !== OTP || tempUser.otpExpire < Date.now()) {
+      return res.status(400).json({ message: "OTP is invalid or expired" });
     }
 
-    user.isVerified = true;
-    user.OTP = undefined;
-    user.otpExpire = undefined;
-    await user.save();
+    // Create real user
+    const user = await User.create({
+      name: tempUser.name,
+      email: tempUser.email,
+      password: tempUser.password,
+      image: tempUser.image,
+      isVerified: true,
+    });
+
+    // Remove from TempUser
+    await TempUser.deleteOne({ email });
 
     // Token
     const token = generateToken(user);

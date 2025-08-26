@@ -73,8 +73,6 @@
  *   post:
  *     summary: Login with email and password
  *     tags: [Auth]
- *     security:
- *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
