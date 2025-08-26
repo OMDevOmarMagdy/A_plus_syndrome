@@ -4,6 +4,7 @@ const User = require("../models/userModel");
 // ✅ Add email to block list
 exports.blockEmail = async (req, res) => {
   try {
+    console.log("This is bolck email middlware");
     const { email } = req.body;
 
     const existing = await BlockedEmail.findOne({ email });
