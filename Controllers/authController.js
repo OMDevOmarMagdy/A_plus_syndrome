@@ -4,7 +4,6 @@ const User = require("../models/userModel");
 const BlockedEmail = require("../models/blockedEmailModel");
 const sendMail = require("../utils/sendMail");
 const generateToken = require("../utils/generateToken");
-const sendmail = require("../utils/sendMail");
 const crypto = require("crypto-js");
 
 const generateOTP = () => {
@@ -222,11 +221,9 @@ exports.forgetPassword = async (req, res, next) => {
   console.log("URL: ", url);
 
   try {
-    await sendmail(
-      user.email,
-      "Forget password",
-      `Click on this link to reset your password: ${url}, \n If not please skip this email.`
-    );
+    console.log("Start sending email...");
+    await sendMail(user.email, "Forget password", `Click here: ${url}`);
+    console.log("Email send finished ✅");
 
     // response ==> check your email if you forget password else please skip it
     res.status(200).json({
