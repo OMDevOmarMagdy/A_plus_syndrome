@@ -104,7 +104,6 @@
  *   post:
  *     summary: Send password reset link to user's email
  *     tags: [Auth]
- *     security: []   # 👈 override so this route is public
  *     requestBody:
  *       required: true
  *       content:
