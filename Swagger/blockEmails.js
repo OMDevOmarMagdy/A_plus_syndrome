@@ -7,7 +7,7 @@
 
 /**
  * @swagger
- * /block-emails/block:
+ * /api/v1/block-emails/block:
  *   post:
  *     summary: Block an email (add to block list and delete user if exists)
  *     tags: [Blocked Emails]
@@ -77,7 +77,7 @@
 
 /**
  * @swagger
- * /block-emails/unblock:
+ * /api/v1/block-emails/unblock:
  *   delete:
  *     summary: Unblock an email (remove from block list)
  *     tags: [Blocked Emails]
@@ -132,7 +132,7 @@
 
 /**
  * @swagger
- * /block-emails:
+ * /api/v1/block-emails:
  *   get:
  *     summary: Get all blocked emails
  *     tags: [Blocked Emails]
