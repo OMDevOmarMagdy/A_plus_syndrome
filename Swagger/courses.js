@@ -109,19 +109,10 @@
  *               description:
  *                 type: string
  *                 example: Updated description here
- *               instructor:
- *                 type: string
- *                 example: Updated Instructor
  *               price:
  *                 type: number
  *                 example: 150
- *               duration:
- *                 type: string
- *                 example: 12 weeks
  *               category:
- *                 type: string
- *                 enum: [Programming, Design, Marketing, Business, Other]
- *                 example: Design
  *               image:
  *                 type: string
  *                 format: binary
