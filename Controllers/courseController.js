@@ -3,6 +3,11 @@ const Course = require("../models/courseModel");
 const ActivityLog = require("../models/activityLogModel");
 const UserCourse = require("../models/userCourseModel");
 const User = require("../models/userModel");
+const s3 = require("../utils/s3");
+const {
+  DeleteObjectCommand,
+  DeleteObjectsCommand,
+} = require("@aws-sdk/client-s3");
 
 exports.addCourse = async (req, res, next) => {
   try {
@@ -165,11 +170,35 @@ exports.updateCourse = async (req, res) => {
 
 exports.deleteCourse = async (req, res) => {
   try {
-    const course = await Course.findByIdAndDelete(req.params.id);
+    const course = await Course.findById(req.params.id);
 
     if (!course) {
       return res.status(404).json({ message: "Course not found" });
     }
+
+    // ✅ delete course image (if not default)
+    if (course.image && course.image !== "default-course.jpg") {
+      await s3.send(
+        new DeleteObjectCommand({
+          Bucket: process.env.AWS_BUCKET_NAME,
+          Key: course.image,
+        })
+      );
+    }
+
+    // ✅ delete all videos
+    if (course.videos && course.videos.length > 0) {
+      const objectsToDelete = course.videos.map((v) => ({ Key: v.fileKey }));
+      await s3.send(
+        new DeleteObjectsCommand({
+          Bucket: process.env.AWS_BUCKET_NAME,
+          Delete: { Objects: objectsToDelete },
+        })
+      );
+    }
+
+    // finally delete from DB
+    await Course.findByIdAndDelete(req.params.id);
 
     await ActivityLog.create({
       action: "DELETE",
@@ -180,10 +209,10 @@ exports.deleteCourse = async (req, res) => {
 
     res.status(200).json({ message: "Course deleted successfully" });
   } catch (err) {
+    console.error("❌ Error deleting course:", err);
     res.status(500).json({ message: err.message });
   }
 };
-
 
 exports.getAllCourses = async (req, res) => {
   try {
