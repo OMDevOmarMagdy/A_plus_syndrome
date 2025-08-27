@@ -232,7 +232,12 @@ exports.forgetPassword = async (req, res, next) => {
 
   try {
     console.log("Start sending email...");
-    await sendMail(user.email, "Forget password", `Click here: ${url}`);
+    await sendMail(
+      user.email,
+      "Forget password",
+      `Click here: ${url}`,
+      undefined
+    );
     console.log("Email send finished ✅");
 
     // response ==> check your email if you forget password else please skip it
