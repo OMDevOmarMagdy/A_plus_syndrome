@@ -112,7 +112,6 @@
  *               price:
  *                 type: number
  *                 example: 150
- *               category:
  *               image:
  *                 type: string
  *                 format: binary
