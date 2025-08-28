@@ -60,7 +60,6 @@ exports.signUp = async (req, res, next) => {
     res.status(201).json({
       message: "OTP sent to your email, Please verify.",
       token,
-      OTP,
     });
   } catch (error) {
     next(error);
