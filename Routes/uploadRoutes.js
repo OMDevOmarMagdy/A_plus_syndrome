@@ -1,4 +1,3 @@
-// Routes/fileRoutes.js
 const express = require("express");
 const uploadWithMulter = require("../utils/uploadWithMulter");
 const uploadController = require("../Controllers/uploadController");

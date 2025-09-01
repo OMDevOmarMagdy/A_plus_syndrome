@@ -1,6 +1,17 @@
 const User = require("../models/userModel");
 const Course = require("../models/courseModel");
 
+// Utility: filter allowed fields
+const filterObj = (obj, ...allowedFields) => {
+  const newObj = {};
+  Object.keys(obj).forEach((key) => {
+    if (allowedFields.includes(key)) {
+      newObj[key] = obj[key];
+    }
+  });
+  return newObj;
+};
+
 // 📌 Create User
 exports.createUser = async (req, res) => {
   try {
@@ -57,17 +68,28 @@ exports.getUser = async (req, res) => {
 exports.updateUser = async (req, res) => {
   try {
     // Prevent password updates here for security
-    if (req.body.password) {
+    if (req.body.password || req.body.passwordConfirm) {
       return res.status(400).json({
         status: "fail",
         message: "Use the password update endpoint instead",
       });
     }
 
-    const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    }).select("-password");
+    let filteredBody;
+
+    if (req.user.role === "admin") {
+      // Admin can update anything except password
+      filteredBody = req.body;
+    } else {
+      // Normal user → only update safe fields
+      filteredBody = filterObj(req.body, "name", "email");
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.id,
+      filteredBody,
+      { new: true, runValidators: true }
+    ).select("-password");
 
     if (!updatedUser) {
       return res
@@ -75,7 +97,10 @@ exports.updateUser = async (req, res) => {
         .json({ status: "fail", message: "User not found" });
     }
 
-    res.status(200).json({ status: "success", data: updatedUser });
+    res.status(200).json({
+      status: "success",
+      data: updatedUser,
+    });
   } catch (err) {
     res.status(400).json({ status: "fail", message: err.message });
   }

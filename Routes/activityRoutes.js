@@ -1,9 +1,9 @@
 // routes/activityRoutes.js
 const express = require("express");
-const { protect } = require("../Controllers/authController");
+const { protect, restrictTo } = require("../Controllers/authController");
 const { getLastLogs } = require("../Controllers/activityController");
 const router = express.Router();
 
-router.get("/last", protect, getLastLogs);
+router.get("/last", protect, restrictTo("admin"), getLastLogs);
 
 module.exports = router;

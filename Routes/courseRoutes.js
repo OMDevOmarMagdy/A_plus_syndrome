@@ -1,6 +1,6 @@
 // routes/courseRoutes.js
 const express = require("express");
-const { protect } = require("../Controllers/authController");
+const { protect, restrictTo } = require("../Controllers/authController");
 const {
   addCourse,
   updateCourse,
@@ -18,25 +18,27 @@ router
   .get(getAllCourses)
   .post(
     protect,
+    restrictTo("admin"),
     upload.fields([
       { name: "image", maxCount: 1 }, // one image
       { name: "videos", maxCount: 10 }, // multiple videos
     ]),
     addCourse
   );
-router.post("/open-course", openCourse);
+router.post("/open-course", protect, restrictTo("admin"), openCourse);
 
 router
   .route("/:id")
   .get(getCourseById)
   .patch(
     protect,
+    restrictTo("admin"),
     upload.fields([
       { name: "image", maxCount: 1 }, // one image
       { name: "videos", maxCount: 10 }, // multiple videos
     ]),
     updateCourse
   )
-  .delete(protect, deleteCourse);
+  .delete(protect, restrictTo("admin"), deleteCourse);
 
 module.exports = router;

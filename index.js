@@ -1,46 +1,80 @@
-const dotenv = require("dotenv");
-dotenv.config();
+// ================== Environment Variables ==================
+require("dotenv").config();
 
+// ================== Core Imports ==================
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
+const morgan = require("morgan");
+const helmet = require("helmet");
+const compression = require("compression");
+const rateLimit = require("express-rate-limit");
+const mongoSanitize = require("express-mongo-sanitize");
+const xss = require("xss-clean");
 
 const swaggerUi = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerOptions = require("./utils/swaggerOptions");
 
+// ================== Routers ==================
 const authRouter = require("./Routes/authRoutes");
 const bookRouter = require("./Routes/bookRoutes");
 const userRouter = require("./Routes/userRoutes");
 const courseRouter = require("./Routes/courseRoutes");
 const activityRouter = require("./Routes/activityRoutes");
 const promoCodeRouter = require("./Routes/promoCodeRoutes");
-
 const allRouter = require("./Routes/allRoutes");
-const activitylogsRouter = require("./Routes/activityRoutes");
+const activityLogsRouter = require("./Routes/activityRoutes");
 const uploadRouter = require("./Routes/uploadRoutes");
 const blockEmailsRouter = require("./Routes/blockedEmailRoutes");
 
-// ============= Create the App =============
+// ================== App Initialization ==================
 const app = express();
 
-// ============= Cors =============
-const cors = require("cors");
-const { updateBook } = require("./Controllers/bookController");
-app.use(cors());
+// ================== Security & Performance Middlewares ==================
+app.use(helmet()); // Secure HTTP headers
+app.use(cors()); // Allow cross-origin requests
+app.use(compression()); // Compress responses
 
-// ============= Middlewares =============
-app.use(express.json());
+// Logging (only in dev mode)
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
+}
 
-// ============= Swagger =============
-const swaggerDocs = swaggerJsDoc(swaggerOptions);
+// Body parsers
+app.use(express.json({ limit: "10kb" })); // Prevent huge payloads
+app.use(express.urlencoded({ extended: true }));
 
-//  ============= Database Connection =============
-const db = process.env.DB_CONNECTION;
-mongoose.connect(db).then(() => {
-  console.log("DB Connect Successfully");
+// Rate Limiting → 100 requests / 15 min per IP
+const limiter = rateLimit({
+  max: 100,
+  windowMs: 15 * 60 * 1000,
+  message: "Too many requests from this IP, please try again later.",
 });
+app.use("/api", limiter);
 
-// ============= Routes =============
+// Data Sanitization → prevent NoSQL injection & XSS attacks
+app.use(mongoSanitize()); // Removes `$` and `.` from query params
+app.use(xss()); // Prevents malicious HTML/JS in inputs
+
+// ================== Swagger ==================
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
+// ================== Database ==================
+const db = process.env.DB_CONNECTION;
+mongoose
+  .connect(db, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("✅ DB connected successfully"))
+  .catch((err) => {
+    console.error("❌ DB connection failed:", err.message);
+    process.exit(1);
+  });
+
+// ================== Routes ==================
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/books", bookRouter);
 app.use("/api/v1/users", userRouter);
@@ -48,23 +82,33 @@ app.use("/api/v1/courses", courseRouter);
 app.use("/api/v1/activity", activityRouter);
 app.use("/api/v1/promocodes", promoCodeRouter);
 app.use("/api/v1/all", allRouter);
-app.use("/api/v1/activitylogs", activitylogsRouter);
+app.use("/api/v1/activitylogs", activityLogsRouter);
 app.use("/api/v1/block-emails", blockEmailsRouter);
-
-// Upload image or vidoes and get it
 app.use("/api/v1/upload", uploadRouter);
 
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+// Health check route
+app.get("/api/v1/health", (req, res) => {
+  res.status(200).json({ status: "OK", message: "Server is healthy 🚀" });
+});
 
-// Global error middleware
+// ================== Global Error Handling ==================
+app.all("*", (req, res, next) => {
+  res.status(404).json({
+    status: "fail",
+    message: `Can't find ${req.originalUrl} on this server`,
+  });
+});
+
 app.use((err, req, res, next) => {
-  res.status(500).json({
-    status: err.status,
+  console.error("❌ Error:", err);
+  res.status(err.statusCode || 500).json({
+    status: "error",
     message: err.message || "Something went wrong",
   });
 });
 
-// Listen to the Server
-app.listen(process.env.PORT, () => {
-  console.log(`Running on port: ${process.env.PORT}`);
+// ================== Server ==================
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`✅ Server running on http://localhost:${PORT}`);
 });

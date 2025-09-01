@@ -1,21 +1,28 @@
 const express = require("express");
 const userController = require("../Controllers/userController");
-const { protect } = require("../Controllers/authController"); // your auth middleware
-const { restrictTo } = require("../Controllers/authController"); // role middleware
+const { protect, restrictTo } = require("../Controllers/authController");
 
 const router = express.Router();
 
+// ================== Public Routes ==================
 router
   .route("/")
-  .get(protect, restrictTo("admin"), userController.getAllUsers) // only admins
-  .post(protect, restrictTo("admin"), userController.createUser);
+  .get(protect, restrictTo("admin"), userController.getAllUsers) // only admins can list users
+  .post(protect, restrictTo("admin"), userController.createUser); // only admins can create users
 
+// ================== User-specific Routes ==================
 router
   .route("/:id")
-  .get(protect, userController.getUser)
-  .patch(protect, restrictTo("admin", "user"), userController.updateUser)
-  .delete(protect, restrictTo("admin", "user"), userController.deleteUser);
+  .get(protect, restrictTo("admin", "user"), userController.getUser) // user can view self, admin can view anyone
+  .patch(protect, restrictTo("admin", "user"), userController.updateUser) // user updates self exept the role, admin updates anyone
+  .delete(protect, restrictTo("admin"), userController.deleteUser); // only admin deletes users
 
-router.get("/:id/courses", protect, userController.getAllCoursesToSpecificUser); // only logged in users can access this route
+// ================== Related Data ==================
+router.get(
+  "/:id/courses",
+  protect,
+  restrictTo("admin", "user"),
+  userController.getAllCoursesToSpecificUser
+);
 
 module.exports = router;
