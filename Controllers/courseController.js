@@ -55,44 +55,6 @@ exports.addCourse = async (req, res, next) => {
   }
 };
 
-/*
-exports.addCourse = async (req, res, next) => {
-  try {
-    const image = req.file ? req.file.key : null; // file uploaded to S3
-    const { title, description, instructor, price, duration, category } =
-      req.body;
-
-    const course = await Course.create({
-      title,
-      description,
-      instructor,
-      price,
-      duration,
-      image,
-      category,
-      createdBy: req.user._id,
-    });
-
-    const activityLogs = await ActivityLog.create({
-      action: "ADD",
-      description: `Course "${course.title}" was added`,
-      user: req.user._id,
-      type: "course",
-    });
-    console.log(activityLogs);
-
-    res.status(201).json({
-      message: "Course added successfully",
-      data: {
-        course,
-      },
-    });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
-*/
-
 exports.updateCourse = async (req, res) => {
   try {
     const updates = { ...req.body };
@@ -142,31 +104,6 @@ exports.updateCourse = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-
-/*
-exports.updateCourse = async (req, res) => {
-  try {
-    const course = await Course.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
-
-    if (!course) {
-      return res.status(404).json({ message: "Course not found" });
-    }
-
-    await ActivityLog.create({
-      action: "UPDATE",
-      description: `Course "${course.title}" was updated`,
-      user: req.user._id,
-      type: "course",
-    });
-
-    res.status(200).json({ message: "Course updated successfully", course });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
-*/
 
 exports.deleteCourse = async (req, res) => {
   try {

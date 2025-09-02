@@ -8,18 +8,16 @@ const {
 
 exports.addBook = async (req, res, next) => {
   try {
-    const { title, summary } = req.body;
+    const { title, summary, price } = req.body;
     const cover = req.file ? req.file.key : null; // file uploaded to S3
 
     if (!title || !summary) {
-      return res
-        .status(400)
-        .json({ message: "All fields are required.........." });
+      return res.status(400).json({ message: "All fields are required..." });
     }
 
     // Create the book with cover image
-    const book = await Book.create({ title, summary, cover });
-    console.log(book);
+    const book = await Book.create({ title, summary, cover, price });
+    // console.log(book);
 
     // Log activity
     await ActivityLog.create({
@@ -39,37 +37,6 @@ exports.addBook = async (req, res, next) => {
     next(error);
   }
 };
-
-/*
-exports.addBook = async (req, res, next) => {
-  try {
-    const { title, author, summary, cover, price } = req.body;
-
-    if (!title || !author || !summary || !cover || !price) {
-      return res.status(400).json({ message: "All fields are required" });
-    }
-
-    const book = await Book.create({ title, author, summary, cover, price });
-    console.log(book);
-
-    await ActivityLog.create({
-      action: "ADD",
-      description: `Book "${book.title}" was added`,
-      user: req.user._id,
-      type: "book",
-    });
-
-    res.status(201).json({
-      message: "Your book is added",
-      data: {
-        book,
-      },
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-*/
 
 exports.getBooks = async (req, res, next) => {
   try {
@@ -133,40 +100,6 @@ exports.updateBook = async (req, res, next) => {
     res.status(500).json({ message: error.message });
   }
 };
-
-/*
-exports.updateBook = async (req, res, next) => {
-  try {
-    const bookId = req.params.id;
-    const { title, summary, author, price, cover } = req.body;
-
-    const book = await Book.findByIdAndUpdate(
-      bookId,
-      { title, summary, author, price, cover },
-      { new: true, runValidators: true }
-    );
-    console.log(book);
-
-    if (!book) {
-      return res.status(404).json({ message: "Book not found" });
-    }
-
-    await ActivityLog.create({
-      action: "UPDATE",
-      description: `Book "${book.title}" was updated`,
-      user: req.user._id,
-      type: "book",
-    });
-
-    res.status(200).json({
-      message: "Book updated successfully",
-      data: { book },
-    });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-*/
 
 exports.deleteBook = async (req, res, next) => {
   try {
