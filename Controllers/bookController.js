@@ -41,7 +41,7 @@ exports.addBook = async (req, res, next) => {
 exports.getBooks = async (req, res, next) => {
   try {
     const books = await Book.find();
-    console.log(books);
+    // console.log(books);
     if (!books) {
       return res.status(404).json({ message: "No books found" });
     }
@@ -49,7 +49,7 @@ exports.getBooks = async (req, res, next) => {
     res.status(200).json({
       message: "Books fetched successfully",
       data: {
-        totalBooks: books.lenght,
+        totalBooks: books.length,
         books,
       },
     });
