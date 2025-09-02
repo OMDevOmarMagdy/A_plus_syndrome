@@ -53,13 +53,13 @@ const limiter = rateLimit({
 });
 app.use("/api", limiter);
 
-// Data Sanitization → prevent NoSQL injection & XSS attacks
-app.use(mongoSanitize()); // Removes `$` and `.` from query params
-app.use(xss()); // Prevents malicious HTML/JS in inputs
-
 // ================== Swagger ==================
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
+// Data Sanitization → prevent NoSQL injection & XSS attacks
+app.use(mongoSanitize()); // Removes `$` and `.` from query params
+app.use(xss()); // Prevents malicious HTML/JS in inputs
 
 // ================== Database ==================
 const db = process.env.DB_CONNECTION;
