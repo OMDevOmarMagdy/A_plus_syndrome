@@ -24,7 +24,7 @@ const courseRouter = require("./Routes/courseRoutes");
 const activityRouter = require("./Routes/activityRoutes");
 const promoCodeRouter = require("./Routes/promoCodeRoutes");
 const allRouter = require("./Routes/allRoutes");
-const activityLogsRouter = require("./Routes/activityRoutes");
+// const activityLogsRouter = require("./Routes/activityRoutes");
 const uploadRouter = require("./Routes/uploadRoutes");
 const blockEmailsRouter = require("./Routes/blockedEmailRoutes");
 
@@ -64,10 +64,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 // ================== Database ==================
 const db = process.env.DB_CONNECTION;
 mongoose
-  .connect(db, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(db)
   .then(() => console.log("✅ DB connected successfully"))
   .catch((err) => {
     console.error("❌ DB connection failed:", err.message);
@@ -82,7 +79,7 @@ app.use("/api/v1/courses", courseRouter);
 app.use("/api/v1/activity", activityRouter);
 app.use("/api/v1/promocodes", promoCodeRouter);
 app.use("/api/v1/all", allRouter);
-app.use("/api/v1/activitylogs", activityLogsRouter);
+// app.use("/api/v1/activitylogs", activityLogsRouter);
 app.use("/api/v1/block-emails", blockEmailsRouter);
 app.use("/api/v1/upload", uploadRouter);
 
@@ -92,7 +89,7 @@ app.get("/api/v1/health", (req, res) => {
 });
 
 // ================== Global Error Handling ==================
-app.all("*", (req, res, next) => {
+app.use((req, res, next) => {
   res.status(404).json({
     status: "fail",
     message: `Can't find ${req.originalUrl} on this server`,
