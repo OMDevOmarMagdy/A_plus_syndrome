@@ -58,7 +58,6 @@ const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // Data Sanitization → prevent NoSQL injection & XSS attacks
-app.use(mongoSanitize()); // Removes `$` and `.` from query params
 app.use(xss()); // Prevents malicious HTML/JS in inputs
 
 // ================== Database ==================
@@ -73,6 +72,9 @@ mongoose
 
 // ================== Routes ==================
 app.use("/api/v1/auth", authRouter);
+
+app.use(mongoSanitize()); // Removes `$` and `.` from query params
+
 app.use("/api/v1/books", bookRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/courses", courseRouter);
