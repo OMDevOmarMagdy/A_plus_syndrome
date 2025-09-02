@@ -60,14 +60,14 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 // Data Sanitization → prevent NoSQL injection & XSS attacks
 app.use(xss()); // Prevents malicious HTML/JS in inputs
 
-// ================== Conditional mongoSanitize ==================
-app.use((req, res, next) => {
-  // Skip Swagger and auth routes
-  if (req.path.startsWith("/api-docs") || req.path.startsWith("/api/v1/auth")) {
-    return next();
-  }
-  mongoSanitize()(req, res, next);
-});
+// // ================== Conditional mongoSanitize ==================
+// app.use((req, res, next) => {
+//   // Skip Swagger and auth routes
+//   if (req.path.startsWith("/api-docs") || req.path.startsWith("/api/v1/auth")) {
+//     return next();
+//   }
+//   mongoSanitize()(req, res, next);
+// });
 
 // ================== Database ==================
 const db = process.env.DB_CONNECTION;
