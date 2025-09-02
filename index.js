@@ -9,8 +9,8 @@ const morgan = require("morgan");
 const helmet = require("helmet");
 const compression = require("compression");
 const rateLimit = require("express-rate-limit");
-const mongoSanitize = require("express-mongo-sanitize");
-const xss = require("xss-clean");
+// const mongoSanitize = require("express-mongo-sanitize");
+// const xss = require("xss-clean");
 
 const swaggerUi = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
@@ -57,17 +57,13 @@ app.use("/api", limiter);
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-// Data Sanitization → prevent NoSQL injection & XSS attacks
-app.use(xss()); // Prevents malicious HTML/JS in inputs
-
-// // ================== Conditional mongoSanitize ==================
+// Only sanitize non-GET requests to avoid breaking Swagger UI
 // app.use((req, res, next) => {
-//   // Skip Swagger and auth routes
-//   if (req.path.startsWith("/api-docs") || req.path.startsWith("/api/v1/auth")) {
-//     return next();
-//   }
+//   if (req.method === "GET") return next(); // Skip GET requests
 //   mongoSanitize()(req, res, next);
 // });
+
+// app.use(xss()); // still safe for GET requests
 
 // ================== Database ==================
 const db = process.env.DB_CONNECTION;

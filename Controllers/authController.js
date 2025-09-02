@@ -148,8 +148,6 @@ exports.login = async (req, res, next) => {
         user,
       },
     });
-
-    next();
   } catch (error) {
     next(error);
   }
