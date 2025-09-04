@@ -25,7 +25,7 @@
  *                 type: string
  *                 example: "A handbook of agile software craftsmanship."
  *               price:
- *                 type: number
+ *                 type: string
  *                 example: 150
  *               cover:
  *                 type: string
@@ -107,7 +107,7 @@
  *                 type: string
  *                 example: "Updated description"
  *               price:
- *                 type: number
+ *                 type: string
  *                 example: 150
  *               cover:
  *                 type: string
