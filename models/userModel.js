@@ -37,6 +37,10 @@ const userSchema = new mongoose.Schema(
       type: [mongoose.Schema.Types.ObjectId],
       ref: "Course",
     },
+    sessionVersion: {
+      type: Number,
+      default: 0, // Start from 0
+    },
     OTP: String,
     otpExpire: Date,
     isVerified: {

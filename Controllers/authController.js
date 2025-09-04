@@ -137,6 +137,10 @@ exports.login = async (req, res, next) => {
       return res.status(400).json({ message: "Invalid email or password" });
     }
 
+    // 🔥 Invalidate old sessions
+    user.sessionVersion += 1;
+    await user.save();
+
     // ============= Token =============
     const token = generateToken(user);
 
@@ -181,7 +185,14 @@ exports.protect = async (req, res, next) => {
       return res.status(404).json({ message: "User does not exist" });
     }
 
-    // 3️⃣ (Optional) Check if user changed password after token was issued
+    // Check session version
+    if (decoded.sessionVersion !== currentUser.sessionVersion) {
+      return res
+        .status(401)
+        .json({ message: "Session expired. Please log in again." });
+    }
+
+    // Check if user changed password after token was issued
     if (currentUser.passwordChangedAt) {
       const changedTimestamp = parseInt(
         currentUser.passwordChangedAt.getTime() / 1000,
