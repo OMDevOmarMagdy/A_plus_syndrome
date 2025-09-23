@@ -24,9 +24,11 @@ const courseRouter = require("./Routes/courseRoutes");
 const activityRouter = require("./Routes/activityRoutes");
 const promoCodeRouter = require("./Routes/promoCodeRoutes");
 const allRouter = require("./Routes/allRoutes");
-// const activityLogsRouter = require("./Routes/activityRoutes");
 const uploadRouter = require("./Routes/uploadRoutes");
 const blockEmailsRouter = require("./Routes/blockedEmailRoutes");
+const yearRouter = require("./Routes/yearRoutes");
+const moduleRouter = require("./Routes/moduleRoutes");
+const subjectRouter = require("./Routes/subjectRoutes");
 
 // ================== App Initialization ==================
 const app = express();
@@ -83,9 +85,11 @@ app.use("/api/v1/courses", courseRouter);
 app.use("/api/v1/activity", activityRouter);
 app.use("/api/v1/promocodes", promoCodeRouter);
 app.use("/api/v1/all", allRouter);
-// app.use("/api/v1/activitylogs", activityLogsRouter);
 app.use("/api/v1/block-emails", blockEmailsRouter);
 app.use("/api/v1/upload", uploadRouter);
+app.use("/api/v1/years", yearRouter);
+app.use("/api/v1/modules", moduleRouter);
+app.use("/api/v1/subjects", subjectRouter);
 
 // Health check route
 app.get("/api/v1/health", (req, res) => {

@@ -223,3 +223,28 @@ exports.openCourse = async (req, res, next) => {
     res.status(500).json({ message: "Something went wrong", error });
   }
 };
+
+
+// ✅ Get courses by Subject ID
+exports.getCoursesBySubject = async (req, res) => {
+  try {
+    const { subjectId } = req.params;
+
+    const courses = await Course.find({ subject_id: subjectId })
+      .populate("createdBy", "name email")
+      .populate("subject_id", "name description");
+
+    if (!courses || courses.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No courses found for this subject" });
+    }
+
+    res.status(200).json({
+      message: "Courses fetched successfully",
+      data: { totalCourses: courses.length, courses },
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};

@@ -46,6 +46,12 @@ const courseSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    // ✅ Course belongs to a Subject
+    subject_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Subject",
+      required: true,
+    },
   },
   { timestamps: true }
 );
