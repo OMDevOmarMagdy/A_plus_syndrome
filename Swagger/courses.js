@@ -179,3 +179,37 @@
  *       500:
  *         description: Something went wrong
  */
+
+/**
+ * @swagger
+ * /api/v1/courses/subject/{subjectId}:
+ *   get:
+ *     summary: Get courses by Subject ID
+ *     tags: [Courses]
+ *     parameters:
+ *       - in: path
+ *         name: subjectId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the subject
+ *     responses:
+ *       200:
+ *         description: List of courses for the given subject
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Courses fetched successfully
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     totalCourses:
+ *                       type: integer
+ *                       example: 3
+ *       404:
+ *         description: No courses found for this subject
+ */

@@ -8,6 +8,7 @@ const {
   getAllCourses,
   getCourseById,
   openCourse,
+  getCoursesBySubject,
 } = require("../Controllers/courseController");
 
 const upload = require("../utils/uploadWithMulter");
@@ -26,7 +27,7 @@ router
     addCourse
   );
 router.post("/open-course", protect, restrictTo("admin"), openCourse);
-
+router.get("/subject/:subjectId", getCoursesBySubject);
 router
   .route("/:id")
   .get(getCourseById)
