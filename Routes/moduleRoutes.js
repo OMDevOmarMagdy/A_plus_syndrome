@@ -13,7 +13,7 @@ const router = express.Router();
 
 router
   .route("/")
-  .get(getModules)
+  .get(protect, getModules)
   .post(protect, restrictTo("admin"), upload.single("cover"), addModule);
 
 router.get("/year/:yearId", getModulesByYear);

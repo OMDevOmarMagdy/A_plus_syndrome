@@ -1,19 +1,21 @@
 /**
  * @swagger
  * tags:
- *   name: Modules
- *   description: Academic module management APIs
+ *   name: Subjects
+ *   description: Academic subject management APIs
  */
 
 /**
  * @swagger
- * /api/v1/modules:
+ * /api/v1/subjects:
  *   get:
- *     summary: Get all modules
- *     tags: [Modules]
+ *     summary: Get all subjects
+ *     tags: [Subjects]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: List of all modules
+ *         description: List of all subjects
  *         content:
  *           application/json:
  *             schema:
@@ -21,37 +23,37 @@
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Modules fetched successfully
+ *                   example: Subjects fetched successfully
  *                 data:
  *                   type: object
  *                   properties:
- *                     total:
+ *                     totalSubjects:
  *                       type: integer
  *                       example: 2
- *                     modules:
+ *                     subjects:
  *                       type: array
  *                       items:
- *                         $ref: '#/components/schemas/Module'
- *       404:
- *         description: No modules found
+ *                         $ref: '#/components/schemas/Subject'
  */
 
 /**
  * @swagger
- * /api/v1/modules/year/{yearId}:
+ * /api/v1/subjects/{id}:
  *   get:
- *     summary: Get modules by year
- *     tags: [Modules]
+ *     summary: Get subject by ID
+ *     tags: [Subjects]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: yearId
+ *         name: id
  *         required: true
  *         schema:
  *           type: string
- *         description: The year ID
+ *         description: Subject ID
  *     responses:
  *       200:
- *         description: List of modules for a given year
+ *         description: Subject details
  *         content:
  *           application/json:
  *             schema:
@@ -59,25 +61,60 @@
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Modules by year fetched successfully
+ *                   example: Subject fetched successfully
  *                 data:
  *                   type: object
  *                   properties:
- *                     total:
- *                       type: integer
- *                       example: 3
- *                     modules:
- *                       type: array
- *                       items:
- *                         $ref: '#/components/schemas/Module'
+ *                     subject:
+ *                       $ref: '#/components/schemas/Subject'
+ *       404:
+ *         description: Subject not found
  */
 
 /**
  * @swagger
- * /api/v1/modules:
+ * /api/v1/subjects/module/{moduleId}:
+ *   get:
+ *     summary: Get subjects by module
+ *     tags: [Subjects]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: moduleId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The module ID
+ *     responses:
+ *       200:
+ *         description: List of subjects for a given module
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Subjects fetched successfully
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     totalSubjects:
+ *                       type: integer
+ *                       example: 3
+ *                     subjects:
+ *                       type: array
+ *                       items:
+ *                         $ref: '#/components/schemas/Subject'
+ */
+
+/**
+ * @swagger
+ * /api/v1/subjects:
  *   post:
- *     summary: Add a new module (Admin only)
- *     tags: [Modules]
+ *     summary: Add a new subject (Admin only)
+ *     tags: [Subjects]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -88,29 +125,24 @@
  *             type: object
  *             required:
  *               - name
- *               - description
- *               - price
- *               - year_name
+ *               - module_name
  *             properties:
  *               name:
  *                 type: string
- *                 example: Database Module
+ *                 example: Math Subject
  *               description:
  *                 type: string
- *                 example: Learn databases from scratch
- *               price:
- *                 type: number
- *                 example: 150
- *               year_name:
+ *                 example: Learn advanced math topics
+ *               module_name:
  *                 type: string
- *                 example: First Year
+ *                 example: Science Module
  *               cover:
  *                 type: string
  *                 format: binary
- *                 description: Module cover image (uploaded to S3)
+ *                 description: Subject cover image (uploaded to S3)
  *     responses:
  *       201:
- *         description: Module added successfully
+ *         description: Subject created successfully
  *         content:
  *           application/json:
  *             schema:
@@ -118,12 +150,12 @@
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Module added successfully
+ *                   example: Subject created successfully
  *                 data:
  *                   type: object
  *                   properties:
- *                     module:
- *                       $ref: '#/components/schemas/Module'
+ *                     subject:
+ *                       $ref: '#/components/schemas/Subject'
  *       400:
  *         description: Invalid input
  *       403:
@@ -132,10 +164,10 @@
 
 /**
  * @swagger
- * /api/v1/modules/{id}:
+ * /api/v1/subjects/{id}:
  *   patch:
- *     summary: Update a module (Admin only)
- *     tags: [Modules]
+ *     summary: Update a subject (Admin only)
+ *     tags: [Subjects]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -144,7 +176,7 @@
  *         required: true
  *         schema:
  *           type: string
- *         description: Module ID
+ *         description: Subject ID
  *     requestBody:
  *       required: true
  *       content:
@@ -154,23 +186,20 @@
  *             properties:
  *               name:
  *                 type: string
- *                 example: Updated Module Name
+ *                 example: Updated Subject Name
  *               description:
  *                 type: string
  *                 example: Updated description
- *               price:
- *                 type: number
- *                 example: 200
- *               year_name:
+ *               module_name:
  *                 type: string
- *                 example: Second Year
+ *                 example: Updated Module Name
  *               cover:
  *                 type: string
  *                 format: binary
  *                 description: New cover image (optional)
  *     responses:
  *       200:
- *         description: Module updated successfully
+ *         description: Subject updated successfully
  *         content:
  *           application/json:
  *             schema:
@@ -178,24 +207,24 @@
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Module updated successfully
+ *                   example: Subject updated successfully
  *                 data:
  *                   type: object
  *                   properties:
- *                     module:
- *                       $ref: '#/components/schemas/Module'
+ *                     subject:
+ *                       $ref: '#/components/schemas/Subject'
  *       404:
- *         description: Module not found
+ *         description: Subject not found
  *       403:
  *         description: Forbidden - Admin only
  */
 
 /**
  * @swagger
- * /api/v1/modules/{id}:
+ * /api/v1/subjects/{id}:
  *   delete:
- *     summary: Delete a module (Admin only)
- *     tags: [Modules]
+ *     summary: Delete a subject (Admin only)
+ *     tags: [Subjects]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -204,12 +233,12 @@
  *         required: true
  *         schema:
  *           type: string
- *         description: Module ID
+ *         description: Subject ID
  *     responses:
  *       200:
- *         description: Module deleted successfully
+ *         description: Subject deleted successfully
  *       404:
- *         description: Module not found
+ *         description: Subject not found
  *       403:
  *         description: Forbidden - Admin only
  */
@@ -218,28 +247,25 @@
  * @swagger
  * components:
  *   schemas:
- *     Module:
+ *     Subject:
  *       type: object
  *       properties:
  *         _id:
  *           type: string
- *           example: 66d1b36f9a8b3c7a12d1c9f1
+ *           example: 66f6e4c2d6a8b3c7a12d1c9f1
  *         name:
  *           type: string
- *           example: Database Module
+ *           example: Math Subject
  *         description:
  *           type: string
- *           example: Learn databases from scratch
- *         price:
- *           type: number
- *           example: 150
+ *           example: Learn advanced math topics
  *         cover:
  *           type: string
- *           example: uploads/module-cover.jpg
- *         year_id:
+ *           example: uploads/subject-cover.jpg
+ *         module_id:
  *           type: string
- *           description: Reference to the year this module belongs to
- *           example: 66d1a36f9a8b3c7a12d1b8e9
+ *           description: Reference to the module this subject belongs to
+ *           example: 66f6e3a6d2a8b3c7a12d1b8e9
  *         createdAt:
  *           type: string
  *           example: 2025-09-23T13:00:00.000Z
