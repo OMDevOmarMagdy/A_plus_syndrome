@@ -210,6 +210,10 @@
  *                     totalCourses:
  *                       type: integer
  *                       example: 3
+ *                     courses:
+ *                       type: array
+ *                       items:
+ *                         $ref: '#/components/schemas/Course'
  *       404:
  *         description: No courses found for this subject
  */
