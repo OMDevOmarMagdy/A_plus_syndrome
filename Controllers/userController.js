@@ -1,5 +1,6 @@
 const User = require("../models/userModel");
 const Course = require("../models/courseModel");
+const Subject = require("../models/subjectModel");
 
 // Utility: filter allowed fields
 const filterObj = (obj, ...allowedFields) => {
@@ -141,6 +142,37 @@ exports.getAllCoursesToSpecificUser = async (req, res, next) => {
       status: "success",
       userCourses: user.courses,
       otherCourses: otherCourses,
+    });
+  } catch (error) {
+    res.status(400).json({ status: "fail", message: error.message });
+  }
+};
+
+exports.getAllSubjectsToSpecificUser = async (req, res, next) => {
+  try {
+    // Get userId and User
+    const userId = req.params.id;
+    const user = await User.findById(userId).populate("subjects");
+    if (!user) {
+      return res
+        .status(404)
+        .json({ status: "fail", message: "User not found" });
+    }
+
+    // Get all subjects except the ones user already has
+    const excludedSubjects = user.subjects.map((s) => s._id);
+    console.log(excludedSubjects);
+
+    const otherSubjects = await Subject.find({
+      _id: { $nin: excludedSubjects },
+    });
+    console.log("Other subjects: ", otherSubjects);
+
+    // Response
+    res.status(200).json({
+      status: "success",
+      userSubjects: user.subjects, // ✅ subjects the user already has
+      otherSubjects: otherSubjects, // ✅ subjects not yet unlocked
     });
   } catch (error) {
     res.status(400).json({ status: "fail", message: error.message });

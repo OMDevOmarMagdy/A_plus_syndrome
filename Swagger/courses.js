@@ -49,6 +49,9 @@
  *                 items:
  *                   type: string
  *                   format: binary
+ *               subject_name:
+ *                 type: string
+ *                 example: Backend Development
  *               price:
  *                 type: number
  *                 minimum: 0
@@ -116,6 +119,9 @@
  *                 type: string
  *                 format: binary
  *                 description: Upload a new course cover image
+ *               subject_name:
+ *                 type: string
+ *                 example: Backend Development
  *               videos:
  *                 type: array
  *                 description: Upload one or more new course videos (they will be appended)

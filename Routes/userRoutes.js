@@ -25,4 +25,11 @@ router.get(
   userController.getAllCoursesToSpecificUser
 );
 
+router.get(
+  "/:id/subjects",
+  protect,
+  restrictTo("admin", "user"),
+  userController.getAllSubjectsToSpecificUser
+);
+
 module.exports = router;

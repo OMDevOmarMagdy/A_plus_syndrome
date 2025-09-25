@@ -6,6 +6,7 @@ const {
   updateSubject,
   deleteSubject,
   getSubjectsByModule,
+  openSubject,
 } = require("../Controllers/subjectController");
 
 const { protect, restrictTo } = require("../Controllers/authController");
@@ -17,6 +18,8 @@ router.get("/:id", protect, getSubjectById);
 
 // Get subjects by module
 router.get("/module/:moduleId", protect, getSubjectsByModule);
+router.post("/open-subject", protect, restrictTo("admin"), openSubject);
+
 router.post(
   "/",
   protect,

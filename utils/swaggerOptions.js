@@ -97,7 +97,25 @@ const swaggerOptions = {
             },
             image: {
               type: "string",
-              example: "https://example.com/nodejs-course.jpg",
+              example: "nodejs-course.jpg",
+            },
+            videos: {
+              type: "array",
+              description: "List of course videos",
+              items: {
+                type: "object",
+                properties: {
+                  fileKey: {
+                    type: "string",
+                    example: "intro-node.mp4",
+                  },
+                  uploadedAt: {
+                    type: "string",
+                    format: "date-time",
+                    example: "2025-09-25T12:34:56.000Z",
+                  },
+                },
+              },
             },
             category: {
               type: "string",

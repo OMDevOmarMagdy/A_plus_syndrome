@@ -245,6 +245,39 @@
 
 /**
  * @swagger
+ * /api/v1/subjects/open-subject:
+ *   post:
+ *     summary: Unlock a subject for a user by email and subject name
+ *     tags: [Subjects]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - subjectName
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: student@example.com
+ *               subjectName:
+ *                 type: string
+ *                 example: Backend Development
+ *     responses:
+ *       200:
+ *         description: Subject unlocked successfully
+ *       404:
+ *         description: User or Subject not found
+ *       500:
+ *         description: Something went wrong
+ */
+
+/**
+ * @swagger
  * components:
  *   schemas:
  *     Subject:

@@ -2,6 +2,9 @@
 const Subject = require("../models/subjectModel");
 const ActivityLog = require("../models/activityLogModel");
 const Module = require("../models/moduleModel");
+const UserSubject = require("../models/userSubjectModel");
+const User = require("../models/userModel");
+
 const s3 = require("../utils/s3");
 const { DeleteObjectCommand } = require("@aws-sdk/client-s3");
 
@@ -193,6 +196,56 @@ exports.deleteSubject = async (req, res, next) => {
     res.status(200).json({ message: "Subject deleted successfully" });
   } catch (error) {
     next(error);
+  }
+};
+
+exports.openSubject = async (req, res, next) => {
+  try {
+    const { email, subjectName } = req.body;
+
+    // Find user by email
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Find subject by name
+    const subject = await Subject.findOne({ name: subjectName });
+    if (!subject) {
+      return res.status(404).json({ message: "Subject not found" });
+    }
+
+    // Check if record exists in UserSubject
+    let userSubject = await UserSubject.findOne({
+      userId: user._id,
+      subjectId: subject._id,
+    });
+
+    if (userSubject) {
+      userSubject.status = "active"; // Reactivate if previously inactive
+      await userSubject.save();
+    } else {
+      userSubject = await UserSubject.create({
+        userId: user._id,
+        subjectId: subject._id,
+        status: "active",
+      });
+    }
+
+    // Add this subject to user's subjects array (if you track it inside User)
+    if (!user.subjects.includes(subject._id)) {
+      user.subjects.push(subject._id);
+      await user.save();
+    }
+
+    res.json({
+      message: `Subject "${subject.name}" unlocked for user ${user.email}`,
+      data: {
+        userSubject,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong", error });
   }
 };
 

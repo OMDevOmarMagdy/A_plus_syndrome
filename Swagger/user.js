@@ -176,35 +176,77 @@
 
 /**
  * @swagger
- * components:
- *   schemas:
- *     User:
- *       type: object
- *       properties:
- *         _id:
+ * /api/v1/users/{id}/subjects:
+ *   get:
+ *     summary: Get all subjects for a specific user (user's subjects + other available subjects)
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
  *           type: string
- *           example: 66b8f36f9a8b3c7a12d1a7c5
- *         name:
- *           type: string
- *           example: Omar Magdy
- *         email:
- *           type: string
- *           example: omar@example.com
- *         role:
- *           type: string
- *           example: user
- *         image:
- *           type: string
- *           example: profile.jpg
- *         isVerified:
- *           type: boolean
- *           example: false
- *         createdAt:
- *           type: string
- *           example: 2025-08-11T12:00:00.000Z
- *         updatedAt:
- *           type: string
- *           example: 2025-08-11T12:00:00.000Z
+ *         description: User ID
+ *         example: 66c1a45f9d12a2b3c4d5e6f7
+ *     responses:
+ *       200:
+ *         description: List of subjects for the user and other subjects not yet unlocked
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 userSubjects:
+ *                   type: array
+ *                   description: Subjects the user already has access to
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                         example: 66c1a46a1a23b4c5d6e7f8g9
+ *                       name:
+ *                         type: string
+ *                         example: Computer Science
+ *                       description:
+ *                         type: string
+ *                         example: Learn the fundamentals of computer science
+ *                       cover:
+ *                         type: string
+ *                         example: cs-cover.jpg
+ *                       module_id:
+ *                         type: string
+ *                         example: 77d2b47a2e34c5d6f7g8h9i0
+ *                 otherSubjects:
+ *                   type: array
+ *                   description: Subjects not yet unlocked by the user
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                         example: 88e3c58b3f45d6e7f8g9h0i1
+ *                       name:
+ *                         type: string
+ *                         example: Backend Development
+ *                       description:
+ *                         type: string
+ *                         example: Learn everything about backend systems
+ *                       cover:
+ *                         type: string
+ *                         example: backend-cover.jpg
+ *                       module_id:
+ *                         type: string
+ *                         example: 99f4d69c4g56e7f8h9i0j1k2
+ *       404:
+ *         description: User not found
+ *       400:
+ *         description: Invalid request
  */
 
 /**
@@ -304,4 +346,37 @@
  *         description: User not found
  *       400:
  *         description: Invalid request
+ */
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *           example: 66b8f36f9a8b3c7a12d1a7c5
+ *         name:
+ *           type: string
+ *           example: Omar Magdy
+ *         email:
+ *           type: string
+ *           example: omar@example.com
+ *         role:
+ *           type: string
+ *           example: user
+ *         image:
+ *           type: string
+ *           example: profile.jpg
+ *         isVerified:
+ *           type: boolean
+ *           example: false
+ *         createdAt:
+ *           type: string
+ *           example: 2025-08-11T12:00:00.000Z
+ *         updatedAt:
+ *           type: string
+ *           example: 2025-08-11T12:00:00.000Z
  */

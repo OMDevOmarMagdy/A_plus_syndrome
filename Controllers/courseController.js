@@ -1,8 +1,9 @@
-// controllers/courseController.js
 const Course = require("../models/courseModel");
 const ActivityLog = require("../models/activityLogModel");
 const UserCourse = require("../models/userCourseModel");
 const User = require("../models/userModel");
+const Subject = require("../models/subjectModel");
+
 const s3 = require("../utils/s3");
 const {
   DeleteObjectCommand,
@@ -24,19 +25,25 @@ exports.addCourse = async (req, res, next) => {
         }))
       : [];
 
-    const { title, description, instructor, price, duration, category } =
-      req.body;
+    const { title, description, price, subject_name } = req.body;
+
+    const subject = await Subject.findOne({ name: subject_name });
+    if (!subject) {
+      return res.status(404).json({
+        status: "error",
+        message: "This subject not exist",
+      });
+    }
+    // console.log(subject);
 
     const course = await Course.create({
       title,
       description,
-      instructor,
       price,
-      duration,
-      category,
       image,
       videos, // ✅ structured video objects
       createdBy: req.user._id,
+      subject_id: subject._id,
     });
 
     await ActivityLog.create({
@@ -71,6 +78,20 @@ exports.updateCourse = async (req, res) => {
         fileKey: file.key,
         uploadedAt: new Date(),
       }));
+    }
+
+    if (updates.subject_name) {
+      const subject = await Subject.findOne({ name: subject_name });
+      if (!subject) {
+        return res.status(404).json({
+          status: "error",
+          message: "This subject not exist",
+        });
+      }
+      console.log(subject);
+
+      updates.subject_id = subject._id;
+      delete updates.subject_name;
     }
 
     // Fetch course
@@ -224,7 +245,6 @@ exports.openCourse = async (req, res, next) => {
   }
 };
 
-
 // ✅ Get courses by Subject ID
 exports.getCoursesBySubject = async (req, res) => {
   try {
@@ -242,7 +262,10 @@ exports.getCoursesBySubject = async (req, res) => {
 
     res.status(200).json({
       message: "Courses fetched successfully",
-      data: { totalCourses: courses.length, courses },
+      data: {
+        totalCourses: courses.length,
+        courses,
+      },
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
