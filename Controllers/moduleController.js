@@ -47,6 +47,9 @@ exports.addModule = async (req, res, next) => {
     //   user: req.user._id,
     //   type: "module",
     // });
+    
+    console.log("req.file:", req.file);
+    console.log("req.body.cover:", req.body.cover);
 
     res.status(201).json({
       message: "Module added successfully",
